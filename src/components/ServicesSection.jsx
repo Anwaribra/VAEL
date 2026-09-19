@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gift, HeartHandshake, Sparkles, ShieldCheck, ArrowUpRight, Award, Layers, CheckCircle2 } from 'lucide-react';
+import { Gift, HeartHandshake, ShieldCheck, ArrowUpRight, Award, Layers, CheckCircle2 } from 'lucide-react';
 
 const servicesData = [
   {
@@ -45,7 +45,7 @@ const servicesData = [
       'Personalized video/audio thank-you memos',
       'Optional silver liquid glass physical NFC card'
     ],
-    accentIcon: Sparkles,
+    accentIcon: Award,
     tag: 'Registry Medium'
   },
   {

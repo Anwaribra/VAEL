@@ -36,70 +36,72 @@ export default function HeroSection() {
   }, [textControls, buttonControls]);
 
   return (
-    <div ref={heroRef} className="w-full px-3 sm:px-6 pt-3 md:pt-4 pb-4">
+    <div ref={heroRef} className="w-full pb-6">
       <motion.section
         id="hero-section"
         style={{ scale: heroScale, opacity: heroOpacity }}
-        className="relative w-full min-h-[88vh] md:min-h-[92vh] max-w-7xl mx-auto bg-[#050507] text-white overflow-hidden flex flex-col justify-center items-center px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-20 select-none rounded-[2rem] sm:rounded-[3rem] md:rounded-[3.5rem] shadow-[0_30px_90px_rgba(0,0,0,0.5)] border border-white/10"
+        className="relative w-full min-h-[92vh] md:min-h-[96vh] bg-[#050507] text-white overflow-hidden flex flex-col justify-center items-center px-6 sm:px-12 pt-36 sm:pt-44 md:pt-48 pb-28 select-none rounded-b-[3.5rem] md:rounded-b-[4.5rem] shadow-[0_35px_100px_rgba(0,0,0,0.6)] border-b border-white/10"
       >
         
         {/* Three.js Interactive GPU Woven Light Particle Canvas */}
         <WovenParticleCanvas />
 
-        {/* Subtle Radial Ambient Glow & Vignette Overlay */}
-        <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-[#050507]/30 to-[#050507]"></div>
+        {/* Dark Vignette Ambient Radial Glow & Text Dimmer */}
+        <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#050507]/80 via-[#050507]/60 to-[#050507]"></div>
 
         {/* Central Hero Text Composition */}
-        <div className="relative z-20 max-w-5xl mx-auto w-full text-center py-10 sm:py-16 space-y-8">
+        <div className="relative z-20 max-w-5xl mx-auto w-full text-center space-y-8 sm:space-y-10">
           
           {/* Animated Display Headline */}
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[1.08]">
+          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[1.1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
             {isAr ? (
               <>
-                نسِيجٌ ينبض بالحياة... <br />
-                <em className="font-serif italic font-light text-amber-100">تحفٌ رقمية صُمّمت لتُخلّد.</em>
+                سايت كاستم لمناسبتك.. <br />
+                <em className="font-serif italic font-normal text-white/90">تحفة رقمية متفصلة عشان تعيش العمر كله.</em>
               </>
             ) : (
               <>
                 Woven by Light... <br />
-                <em className="font-serif italic font-light text-amber-100">Digital Portals for Eternity.</em>
+                <em className="font-serif italic font-normal text-white/90">Digital Portals for Eternity.</em>
               </>
             )}
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle - Clean Editorial Paragraph (No Pill Container) */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="max-w-2xl mx-auto text-base sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed px-4"
+            className="max-w-2xl mx-auto text-base sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed px-4 drop-shadow-md"
           >
             {isAr
-              ? 'مواقع كاستم بهوية سينمائية وتجربة تفاعلية ثلاثية الأبعاد للهدايا، ودعوات الزفاف، والمناسبات التذكارية.'
+              ? 'مواقع ودعوات كاستم بتجربة سينمائية تفاعلية.. للهدايا الغالية، ودعوات الفرح، وأرشيف أجمل لحظاتكم.'
               : 'Custom digital portals for luxury gifts, ceremonial wedding invitations, and milestone archives.'}
           </motion.p>
 
-          {/* Action Buttons */}
+          {/* Action Buttons - Liquid Glass Design Language */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-wrap justify-center gap-4 pt-4"
+            className="flex flex-wrap justify-center gap-4 pt-2"
           >
+            {/* Primary Solid White Button */}
             <a
               href="#showcase"
-              className="px-9 py-4 rounded-full bg-amber-200 text-black font-semibold text-xs sm:text-sm uppercase tracking-wider shadow-2xl hover:bg-white transition-all duration-300 flex items-center gap-2.5 hover:scale-105"
+              className="px-9 py-4 rounded-full bg-white text-black font-semibold text-xs sm:text-sm uppercase tracking-wider shadow-2xl hover:bg-zinc-200 transition-all duration-300 flex items-center gap-2.5 hover:scale-105"
             >
-              <Play className="w-4 h-4 fill-black" />
-              <span>{isAr ? 'معاينة النماذج الحية' : 'Explore Live Demos'}</span>
+              <Play className="w-4 h-4 fill-black text-black" />
+              <span>{isAr ? 'جرب الديموهات الحية بنفسك' : 'Explore Live Demos'}</span>
             </a>
 
+            {/* Secondary Liquid Glass Button */}
             <a
               href="#pricing"
-              className="px-9 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold text-xs sm:text-sm uppercase tracking-wider hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
+              className="px-9 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/25 text-white font-semibold text-xs sm:text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 shadow-lg hover:scale-105"
             >
-              <span>{isAr ? 'احجز هديتك' : 'Order Gift'}</span>
-              <ArrowUpRight className="w-4 h-4 text-white" />
+              <span>{isAr ? 'اطلب السايت بتاعك' : 'Order Gift'}</span>
+              <ArrowUpRight className="w-4 h-4" />
             </a>
           </motion.div>
 
@@ -161,11 +163,10 @@ function WovenParticleCanvas() {
       originalPositions[i * 3 + 1] = y;
       originalPositions[i * 3 + 2] = z;
 
-      // Warm Amber / Champagne Gold HSL Palette
+      // Pure Silver & Diamond Ice Light HSL Palette
       const color = new THREE.Color();
-      const hue = 0.08 + Math.random() * 0.06; // Amber gold
-      const lightness = 0.55 + Math.random() * 0.35;
-      color.setHSL(hue, 0.85, lightness);
+      const lightness = 0.65 + Math.random() * 0.35;
+      color.setHSL(0.0, 0.0, lightness);
 
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
@@ -180,11 +181,11 @@ function WovenParticleCanvas() {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.022,
+      size: 0.015,
       vertexColors: true,
       blending: THREE.AdditiveBlending,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.45,
     });
 
     const points = new THREE.Points(geometry, material);
@@ -284,5 +285,5 @@ function WovenParticleCanvas() {
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0 overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem]" />;
+  return <div ref={mountRef} className="absolute inset-0 z-0 overflow-hidden rounded-b-[3.5rem] md:rounded-b-[4.5rem]" />;
 }

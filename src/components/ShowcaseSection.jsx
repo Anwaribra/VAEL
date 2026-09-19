@@ -34,18 +34,18 @@ export default function ShowcaseSection() {
         {/* Header */}
         <div className="text-center max-w-5xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-black/5 border border-black/10 text-xs sm:text-sm font-mono text-[#52525B] uppercase tracking-widest mb-4 font-semibold shadow-sm">
-            {isAr ? '04 — المعاينة التفاعلية الحية' : '04 — Live Artifact Showcase'}
+            {isAr ? '04 — الديموهات الحية' : '04 — Live Artifact Showcase'}
           </div>
           <h2 className="font-display text-5xl sm:text-7xl md:text-8xl font-light text-[#0F0F12] tracking-tight">
             {isAr ? (
-              <>جرب النماذج الحية <span className="font-serif italic text-[#52525B]">بنفسك.</span></>
+              <>جرب النماذج بنفسك <span className="font-serif italic text-[#52525B]">لايف دلوقتي.</span></>
             ) : (
               <>Interact With Live <span className="font-serif italic text-[#52525B]">Demo Artifacts.</span></>
             )}
           </h2>
           <p className="mt-4 text-[#52525B] font-light text-xl sm:text-2xl md:text-3xl">
             {isAr
-              ? 'اضغط على أي نموذج أدناه للتفاعل المباشر مع أحدث تصاميمنا.'
+              ? 'دوس على أي ديمو تحت عشان تفتحه وتجرب السايت شغال إزاي بنفسك.'
               : 'Click any tab below to test live interactive sample websites directly.'}
           </p>
         </div>
@@ -54,8 +54,8 @@ export default function ShowcaseSection() {
         <div className="flex justify-center gap-4 mb-12 flex-wrap">
           {[
             { id: 'wedding', name: isAr ? 'دعوة زفاف فاخرة' : 'Bespoke Wedding Portal' },
-            { id: 'memory', name: isAr ? 'سايت هدية (Gift Archive)' : 'Personal Gift Site' },
-            { id: 'wishlist', name: isAr ? 'قائمة الهدايا (Gift Registry)' : 'Digital Gift Registry' },
+            { id: 'memory', name: isAr ? 'سايت هدية شخصية' : 'Personal Gift Site' },
+            { id: 'wishlist', name: isAr ? 'قائمة الهدايا والفلوس' : 'Digital Gift Registry' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -72,7 +72,7 @@ export default function ShowcaseSection() {
         </div>
 
         {/* Demo View Container */}
-        <div className="relative min-h-[580px] w-full rounded-[2.5rem] bg-[#0A0A0E] text-white p-8 sm:p-12 md:p-16 shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-black/10 backdrop-blur-xl overflow-hidden">
+        <div className="relative min-h-[580px] w-full rounded-[3.5rem] md:rounded-[4.5rem] bg-[#0A0A0E] text-white p-8 sm:p-12 md:p-16 shadow-[0_30px_90px_rgba(0,0,0,0.3)] border border-white/10 backdrop-blur-xl overflow-hidden">
           
           <AnimatePresence mode="wait">
             
@@ -172,8 +172,22 @@ export default function ShowcaseSection() {
                   </h3>
 
                   <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                    Designed for Elena & Marcus. A private interactive gift site containing intimate photographic moments, encrypted letters, and high-fidelity spatial audio.
+                    {isAr
+                      ? 'تصميم مخصص للمناسبات الخاصة وهدايا أعياد الميلاد. يحتوي على أرشيف صور خاص، رسائل صوتية، وقائمة هدايا السرية.'
+                      : 'Designed for Elena & Marcus. A private interactive gift site containing intimate photographic moments, encrypted letters, and high-fidelity spatial audio.'}
                   </p>
+
+                  <div className="pt-2 flex flex-wrap gap-3">
+                    <a
+                      href="/demos/gift-site/index.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-7 py-3.5 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-wider shadow-xl hover:bg-zinc-200 transition-all inline-flex items-center gap-2"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-black" />
+                      <span>{isAr ? 'معاينة موقع الهدية الكامل' : 'Explore Live Site'}</span>
+                    </a>
+                  </div>
 
                   {!unlocked ? (
                     <form onSubmit={handleUnlock} className="space-y-4 pt-4 border-t border-white/10">
@@ -234,13 +248,18 @@ export default function ShowcaseSection() {
 
                 {/* Spatial Frequency Visualizer Frame */}
                 <div className="lg:col-span-7">
-                  <div className="relative rounded-2xl overflow-hidden aspect-[16/10] bg-[#050505] text-white p-8 flex flex-col justify-between shadow-2xl border border-white/10">
+                  <a
+                    href="/demos/gift-site/index.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative block rounded-2xl overflow-hidden aspect-[16/10] bg-[#050505] text-white p-8 flex flex-col justify-between shadow-2xl border border-white/10 hover:border-white/30 transition-all"
+                  >
                     <div className="flex justify-between items-center text-xs font-mono text-zinc-400">
                       <span className="flex items-center gap-2">
                         <Radio className="w-3.5 h-3.5 text-white animate-pulse" />
                         Spatial Frequency Visualizer
                       </span>
-                      <span>96kHz / 24-bit</span>
+                      <span className="px-3 py-1 rounded-full bg-white text-black font-semibold text-[10px] tracking-wider uppercase">Open Full Demo</span>
                     </div>
 
                     <div className="my-auto py-6 flex items-center justify-center gap-2 h-32">
@@ -257,12 +276,12 @@ export default function ShowcaseSection() {
 
                     <div className="flex justify-between items-end border-t border-white/10 pt-4">
                       <div>
-                        <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest block">Track Reference</span>
-                        <h4 className="text-base font-display text-white font-semibold">Paris, October 2024 — Spatial Recording</h4>
+                        <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest block">Personal Gift Site</span>
+                        <h4 className="text-base font-display text-white font-semibold">Elena Vance — 30th Birthday Vault</h4>
                       </div>
-                      <span className="text-xs font-mono text-zinc-500">04 / 12</span>
+                      <span className="text-xs font-mono text-zinc-300 group-hover:underline">Explore Site &rarr;</span>
                     </div>
-                  </div>
+                  </a>
                 </div>
               </motion.div>
             )}
@@ -288,20 +307,51 @@ export default function ShowcaseSection() {
                   </h3>
 
                   <p className="text-zinc-400 font-light text-sm md:text-base leading-relaxed">
-                    Designed for luxury celebrations. Guests can inspect curated gift cards, contribute towards dream experiences, and attach encrypted personal blessings.
+                    {isAr
+                      ? 'قائمة هدايا وتبرعات تفاعلية فاخرة. يمكن للضيوف تصفح الهدايا، المساهمة في التجارب، وإرسال مباركات خاصة.'
+                      : 'Designed for luxury celebrations. Guests can inspect curated gift cards, contribute towards dream experiences, and attach encrypted personal blessings.'}
                   </p>
 
-                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-                    <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest block">Interactive Live Demo</span>
-                    <p className="text-xs text-zinc-300">Click any gift item on the right panel to test sending a blessing & contribution.</p>
+                  <div className="pt-2 flex flex-wrap gap-3">
+                    <a
+                      href="/demos/gift-registry/index.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-7 py-3.5 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-wider shadow-xl hover:bg-zinc-200 transition-all inline-flex items-center gap-2"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-black" />
+                      <span>{isAr ? 'معاينة قائمة الهدايا الحية' : 'Explore Live Site'}</span>
+                    </a>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                    <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest block">Interactive Features</span>
+                    <p className="text-xs text-zinc-300">Live progress bars, currency switcher, donor messages wall, and custom amount contribution modals.</p>
                   </div>
                 </div>
 
                 <div className="lg:col-span-7 space-y-3">
+                  <a
+                    href="/demos/gift-registry/index.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block group p-6 rounded-2xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 hover:border-white transition-all shadow-2xl mb-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block">74% Total Funded</span>
+                        <h4 className="font-display text-2xl font-semibold text-white">Aurelia & Julian Digital Registry</h4>
+                      </div>
+                      <span class="px-5 py-2 rounded-full bg-white text-black font-semibold text-xs transition-transform group-hover:scale-105">
+                        Open Full Site &rarr;
+                      </span>
+                    </div>
+                  </a>
+
                   {[
-                    { id: 'item1', title: 'Amalfi Coast Honeymoon Experience', category: 'Romantic Journey', status: 'Available' },
-                    { id: 'item2', title: 'Physical Silver Glass NFC Artifact', category: 'Tangible Keepsake', status: 'Popular Gift' },
-                    { id: 'item3', title: 'Curated Fine Art Memory Framing', category: 'Gallery Print', status: 'Available' }
+                    { id: 'item1', title: 'Amalfi Coast Honeymoon Experience', category: 'Romantic Journey', status: '64% Funded' },
+                    { id: 'item2', title: 'Bowers & Wilkins Hi-Fi Audio System', category: 'Home Keepsake', status: 'Claimed by Marc' },
+                    { id: 'item3', title: 'Sukiyabashi Omakase Tasting Experience', category: 'Fine Dining', status: 'Available' }
                   ].map((gift) => {
                     const isGiven = contributedGifts.includes(gift.id);
                     return (

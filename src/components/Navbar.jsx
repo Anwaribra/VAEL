@@ -109,7 +109,7 @@ export default function Navbar() {
             >
               <Globe
                 className={`w-4 h-4 transition-colors ${
-                  isOverLight ? 'text-[#0F0F12]' : 'text-amber-200'
+                  isOverLight ? 'text-[#0F0F12]' : 'text-white'
                 }`}
               />
             </button>
@@ -119,7 +119,7 @@ export default function Navbar() {
               className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider shadow-md transition-all hover:scale-105 hidden sm:inline-flex items-center ${
                 isOverLight
                   ? 'bg-[#0F0F12] text-white hover:bg-black'
-                  : 'bg-amber-200 text-black hover:bg-white'
+                  : 'bg-white/15 backdrop-blur-md border border-white/25 text-white hover:bg-white hover:text-black shadow-lg'
               }`}
             >
               <span>{isAr ? 'احجز هديتك' : 'Order Gift'}</span>
@@ -147,12 +147,12 @@ export default function Navbar() {
           </a>
 
           {/* Mobile Language Switcher */}
-          <button onClick={toggleLang} className="flex flex-col items-center gap-0.5 text-amber-200 font-bold" aria-label="Toggle Language">
-            <Globe className="w-4 h-4" />
+          <button onClick={toggleLang} className="flex flex-col items-center gap-0.5 text-white font-bold" aria-label="Toggle Language">
+            <Globe className="w-4 h-4 text-white" />
             <span className="text-[9px] font-mono uppercase tracking-widest">{isAr ? 'EN' : 'AR'}</span>
           </button>
 
-          <a href="#pricing" className="flex items-center justify-center bg-amber-200 text-black px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+          <a href="#pricing" className="flex items-center justify-center bg-white text-black px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg hover:bg-zinc-200">
             <span>{isAr ? 'طلب' : 'Order'}</span>
           </a>
         </motion.div>
@@ -160,5 +160,3 @@ export default function Navbar() {
     </>
   );
 }
-
-

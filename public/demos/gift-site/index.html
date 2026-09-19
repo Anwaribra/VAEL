@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elysium — Sophia's 30th Birthday Private Gift Vault | VAEL</title>
+  <meta name="description" content="A private luxury personal gift site created for Sophia's 30th Milestone — audio memos, intimate story timeline, private memory vault, and secret guest blessings.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            cinzel: ['"Cinzel"', 'serif'],
+          },
+          colors: {
+            vault: {
+              950: '#070709',
+              900: '#0E0E12',
+              800: '#16161F',
+              700: '#232330',
+              accent: '#C5A880',
+              rose: '#E2B8B8',
+              emerald: '#2D5E4E'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    .glass-card {
+      background: rgba(22, 22, 31, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .glass-modal {
+      background: rgba(14, 14, 18, 0.88);
+      backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .text-gradient-rose {
+      background: linear-gradient(135deg, #FFF0F0 0%, #E2B8B8 50%, #C5A880 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070709;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232330;
+      border-radius: 9999px;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.05); }
+    }
+    .animate-glow {
+      animation: pulseGlow 8s infinite ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="bg-vault-950 text-slate-100 font-sans min-h-screen selection:bg-rose-900 selection:text-white relative overflow-x-hidden">
+
+  <!-- Atmospheric Lighting Elements -->
+  <div class="fixed top-0 left-1/4 w-[600px] h-[600px] bg-rose-950/20 rounded-full blur-[140px] pointer-events-none animate-glow z-0"></div>
+  <div class="fixed bottom-0 right-1/4 w-[700px] h-[700px] bg-vault-emerald/15 rounded-full blur-[160px] pointer-events-none animate-glow z-0" style="animation-delay: -4s;"></div>
+
+  <!-- Locked Gate Overlay (Interactive Passphrase Unlock) -->
+  <div id="gateModal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-vault-950/95 backdrop-blur-2xl transition-all duration-700">
+    <div class="max-w-md w-full glass-modal p-8 md:p-10 rounded-3xl text-center shadow-2xl relative border border-white/10">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 text-rose-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+        </svg>
+      </div>
+
+      <span class="text-xs font-cinzel tracking-[0.3em] uppercase text-rose-300/80 block mb-2">Private Personal Vault</span>
+      <h2 class="font-serif text-3xl font-normal text-white mb-3">Sophia's 30th Birthday</h2>
+      <p class="text-sm text-zinc-400 font-light leading-relaxed mb-6">
+        This private gift site contains personal audio memos, milestone surprises, and guest blessings.
+      </p>
+
+      <form id="gateForm" class="space-y-4">
+        <div>
+          <input 
+            type="password" 
+            id="gatePassphrase" 
+            placeholder="Enter secret passphrase..." 
+            class="w-full px-5 py-3.5 rounded-xl bg-black/50 border border-white/10 text-white placeholder-zinc-500 text-center font-mono text-sm focus:outline-none focus:border-rose-300 transition-colors"
+          />
+          <p id="gateError" class="text-xs text-rose-400 mt-2 hidden">Incorrect code. Click below to bypass demo access.</p>
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full py-4 rounded-xl bg-white text-vault-950 font-medium text-xs font-cinzel tracking-widest uppercase hover:bg-zinc-200 transition-all shadow-lg hover:shadow-white/10"
+        >
+          Unlock Private Vault
+        </button>
+      </form>
+
+      <div class="mt-6 pt-6 border-t border-white/5 flex items-center justify-between text-xs text-zinc-500 font-light">
+        <span>Curated via VAEL</span>
+        <button onclick="unlockGateDirect()" class="text-rose-300/80 hover:text-white transition-colors underline">Bypass for Demo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-vault-950/70 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-serif italic text-xs text-white group-hover:scale-110 transition-transform">S</span>
+        <span class="font-cinzel text-sm tracking-[0.25em] text-white font-medium uppercase">SOPHIA VANCE — XXX</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-xs font-cinzel tracking-widest text-zinc-400">
+        <a href="#hero" class="hover:text-white transition-colors">Overview</a>
+        <a href="#audio" class="hover:text-white transition-colors">Audio Memo</a>
+        <a href="#gallery" class="hover:text-white transition-colors">Milestones</a>
+        <a href="#wishlist" class="hover:text-white transition-colors">Gift Vault</a>
+        <a href="#blessings" class="hover:text-white transition-colors">Guestbook</a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <a href="javascript:history.back()" class="px-4 py-2 rounded-full glass-pill text-xs font-cinzel tracking-wider text-zinc-300 hover:text-white hover:border-white/30 transition-all flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to VAEL
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-24">
+
+    <!-- HERO SECTION WITH UNIQUE PORTRAIT IMAGE -->
+    <section id="hero" class="min-h-[85vh] flex items-center justify-center px-6 relative py-12">
+      <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-pill text-xs font-cinzel tracking-[0.3em] uppercase text-rose-200">
+            <span>Bespoke Milestone Gift Site</span>
+          </div>
+
+          <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-normal leading-[1.08] text-gradient-rose">
+            Sophia Vance's <span class="italic font-light">30th Birthday.</span>
+          </h1>
+
+          <p class="text-zinc-300 font-light text-base sm:text-xl max-w-xl leading-relaxed">
+            A private digital artifact created by loved ones to honor thirty years of art, travels, and unforgettable memories.
+          </p>
+
+          <!-- Live Countdown -->
+          <div class="pt-4">
+            <span class="text-xs font-cinzel tracking-[0.25em] text-zinc-400 uppercase block mb-3">Surprise Reveal Gala In</span>
+            <div class="flex justify-center lg:justify-start gap-4 text-center">
+              <div class="glass-card px-5 py-3.5 rounded-2xl min-w-[70px]">
+                <span id="cd-days" class="font-serif text-3xl text-white block">12</span>
+                <span class="text-[10px] font-cinzel tracking-widest text-zinc-400 uppercase">Days</span>
+              </div>
+              <div class="glass-card px-5 py-3.5 rounded-2xl min-w-[70px]">
+                <span id="cd-hours" class="font-serif text-3xl text-white block">06</span>
+                <span class="text-[10px] font-cinzel tracking-widest text-zinc-400 uppercase">Hours</span>
+              </div>
+              <div class="glass-card px-5 py-3.5 rounded-2xl min-w-[70px]">
+                <span id="cd-mins" class="font-serif text-3xl text-white block">18</span>
+                <span class="text-[10px] font-cinzel tracking-widest text-zinc-400 uppercase">Mins</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
+            <a href="#audio" class="px-8 py-4 rounded-full bg-white text-vault-950 font-medium text-xs font-cinzel tracking-widest uppercase hover:bg-zinc-200 transition-all shadow-xl">
+              Play Voice Note
+            </a>
+            <a href="#wishlist" class="px-8 py-4 rounded-full glass-pill text-white font-medium text-xs font-cinzel tracking-widest uppercase hover:bg-white/10 transition-all">
+              Gift Vault
+            </a>
+          </div>
+        </div>
+
+        <!-- Dedicated Portrait Image -->
+        <div class="lg:col-span-5">
+          <div class="glass-card p-4 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden group">
+            <div class="aspect-[4/5] rounded-[2rem] overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop" 
+                alt="Sophia Vance Portrait" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95" 
+              />
+            </div>
+            <div class="p-4 text-center">
+              <span class="text-[11px] font-cinzel tracking-[0.2em] text-rose-300 uppercase block">Milestone Portrait</span>
+              <h3 class="font-serif text-lg text-white font-medium">Sophia Vance — Paris, 2026</h3>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SPATIAL AUDIO MEMO PLAYER SECTION -->
+    <section id="audio" class="py-24 px-6 border-t border-white/5 bg-vault-900/40">
+      <div class="max-w-5xl mx-auto">
+        <div class="glass-card rounded-3xl p-8 sm:p-12 border border-white/10 relative overflow-hidden">
+          
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <div class="lg:col-span-5 space-y-4">
+              <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-950/60 text-rose-300 text-[10px] font-cinzel tracking-widest uppercase border border-rose-800/40">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+                High-Fidelity Audio Memo
+              </div>
+
+              <h2 class="font-serif text-3xl sm:text-4xl text-white font-normal">
+                "Midnight Letter from Julian"
+              </h2>
+
+              <p class="text-zinc-400 font-light text-sm leading-relaxed">
+                Recorded in Montmartre, Paris. High-resolution voice recording encoded directly into Sophia's private artifact.
+              </p>
+
+              <div class="pt-2 text-xs font-mono text-zinc-500">
+                <span>Duration: 03:12 • Encrypted 24-bit WAV</span>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 bg-vault-950/80 p-6 sm:p-8 rounded-2xl border border-white/10 space-y-6">
+              
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <button id="audioPlayBtn" onclick="toggleAudioDemo()" class="w-12 h-12 rounded-full bg-white text-vault-950 flex items-center justify-center hover:scale-105 transition-transform shadow-lg">
+                    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                  </button>
+                  <div>
+                    <span id="audioTrackTitle" class="text-sm font-medium text-white block">Parisian Autumn Echoes</span>
+                    <span id="audioStatusText" class="text-xs text-zinc-400 font-light">Paused • Click play to preview</span>
+                  </div>
+                </div>
+
+                <span id="audioTime" class="text-xs font-mono text-rose-300">01:05 / 03:12</span>
+              </div>
+
+              <!-- Animated Waveform Bars -->
+              <div class="flex items-center justify-between gap-1.5 h-16 pt-2">
+                <div class="audio-bar w-1.5 bg-rose-200/40 rounded-full h-8 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/60 rounded-full h-12 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/90 rounded-full h-14 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-300 rounded-full h-10 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/50 rounded-full h-6 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/80 rounded-full h-16 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-white rounded-full h-12 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/70 rounded-full h-9 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/90 rounded-full h-15 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-300 rounded-full h-11 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/40 rounded-full h-7 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/80 rounded-full h-13 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/60 rounded-full h-8 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-rose-200/90 rounded-full h-14 transition-all duration-300"></div>
+                <div class="audio-bar w-1.5 bg-white rounded-full h-10 transition-all duration-300"></div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVATE MEMORY ARCHIVE GALLERY WITH UNIQUE IMAGES -->
+    <section id="gallery" class="py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+          <span class="text-xs font-cinzel tracking-[0.3em] text-rose-300 uppercase block">Chapters & Moments</span>
+          <h2 class="font-serif text-4xl sm:text-5xl text-white font-normal">Thirty Years of Stories</h2>
+          <p class="text-zinc-400 font-light text-base">Explore milestone chapters collected across Europe and Asia.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Memory Card 1: Paris -->
+          <div class="glass-card rounded-3xl p-6 hover:border-white/20 transition-all duration-500 group cursor-pointer" onclick="openMemoryModal('The Paris Autumn', 'Autumn 2024 — Long walks through Montmartre and analog photography archives.')">
+            <div class="aspect-[4/5] rounded-2xl overflow-hidden mb-6 relative">
+              <img 
+                src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1000&auto=format&fit=crop" 
+                alt="Paris Autumn" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95" 
+              />
+              <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-cinzel text-zinc-300 border border-white/10">2024</div>
+            </div>
+            <span class="text-[11px] font-cinzel tracking-widest text-rose-300 uppercase block mb-1">Vol. I — Travel</span>
+            <h3 class="font-serif text-xl text-white font-normal mb-2">The Parisian Autumn</h3>
+            <p class="text-xs text-zinc-400 font-light leading-relaxed">Quiet mornings along the Seine and analog photography sessions in Le Marais.</p>
+          </div>
+
+          <!-- Memory Card 2: Vinyl Sound Studio -->
+          <div class="glass-card rounded-3xl p-6 hover:border-white/20 transition-all duration-500 group cursor-pointer" onclick="openMemoryModal('Vinyl Sessions', 'Winter 2025 — Analog record collection and soundscape recording.')">
+            <div class="aspect-[4/5] rounded-2xl overflow-hidden mb-6 relative">
+              <img 
+                src="https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?q=80&w=1000&auto=format&fit=crop" 
+                alt="Vinyl Record Studio" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95" 
+              />
+              <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-cinzel text-zinc-300 border border-white/10">2025</div>
+            </div>
+            <span class="text-[11px] font-cinzel tracking-widest text-rose-300 uppercase block mb-1">Vol. II — Music</span>
+            <h3 class="font-serif text-xl text-white font-normal mb-2">The Vinyl & Sound Archive</h3>
+            <p class="text-xs text-zinc-400 font-light leading-relaxed">Late-night listening sessions and curated jazz playlists swaps with friends.</p>
+          </div>
+
+          <!-- Memory Card 3: Design Studio -->
+          <div class="glass-card rounded-3xl p-6 hover:border-white/20 transition-all duration-500 group cursor-pointer" onclick="openMemoryModal('Architecture Studio', 'Spring 2026 — Opening her independent architectural interior lab.')">
+            <div class="aspect-[4/5] rounded-2xl overflow-hidden mb-6 relative">
+              <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop" 
+                alt="Modern Studio Interior" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95" 
+              />
+              <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-cinzel text-zinc-300 border border-white/10">2026</div>
+            </div>
+            <span class="text-[11px] font-cinzel tracking-widest text-rose-300 uppercase block mb-1">Vol. III — Design</span>
+            <h3 class="font-serif text-xl text-white font-normal mb-2">The Interior Lab Opening</h3>
+            <p class="text-xs text-zinc-400 font-light leading-relaxed">Launching her independent architectural design studio celebrating minimal spatial art.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SURPRISE GIFT VAULT & WISHLIST -->
+    <section id="wishlist" class="py-24 px-6 border-t border-white/5 bg-vault-900/20">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div>
+            <span class="text-xs font-cinzel tracking-[0.3em] text-rose-300 uppercase block mb-2">Surprise Milestone Registry</span>
+            <h2 class="font-serif text-4xl sm:text-5xl text-white font-normal">Sophia's Birthday Wish Vault</h2>
+          </div>
+          <p class="text-zinc-400 font-light text-sm max-w-md">
+            Friends and family can reserve or contribute to Sophia's dream 30th birthday experiences below.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <!-- Gift Item 1 -->
+          <div class="glass-card rounded-3xl p-8 flex flex-col justify-between border border-white/10 hover:border-rose-300/40 transition-all">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between text-xs font-mono text-zinc-400">
+                <span>Group Travel Fund</span>
+                <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800/50 font-sans font-medium text-[11px]">80% Funded</span>
+              </div>
+              <h3 class="font-serif text-2xl text-white font-normal">Northern Lights Iceland Retreat</h3>
+              <p class="text-xs text-zinc-400 leading-relaxed font-light">
+                A 7-day thermal spring & glass-igloo photography tour planned for late 2026.
+              </p>
+
+              <!-- Progress bar -->
+              <div class="space-y-1.5 pt-2">
+                <div class="flex justify-between text-[11px] font-mono text-zinc-400">
+                  <span>Raised: $4,000</span>
+                  <span>Goal: $5,000</span>
+                </div>
+                <div class="h-2 w-full bg-black/60 rounded-full overflow-hidden p-0.5 border border-white/10">
+                  <div class="h-full bg-gradient-to-r from-rose-300 to-vault-accent rounded-full" style="width: 80%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="openGiftModal('Northern Lights Iceland Retreat')" class="mt-8 w-full py-3.5 rounded-xl bg-white text-vault-950 font-medium text-xs font-cinzel tracking-widest uppercase hover:bg-zinc-200 transition-all shadow-lg">
+              Contribute to Trip
+            </button>
+          </div>
+
+          <!-- Gift Item 2 -->
+          <div class="glass-card rounded-3xl p-8 flex flex-col justify-between border border-white/10 hover:border-rose-300/40 transition-all">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between text-xs font-mono text-zinc-400">
+                <span>Physical Keepsake</span>
+                <span class="px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800/50 font-sans font-medium text-[11px]">Reserved by Claire</span>
+              </div>
+              <h3 class="font-serif text-2xl text-white font-normal">Hasselblad 907X Camera</h3>
+              <p class="text-xs text-zinc-400 leading-relaxed font-light">
+                Medium format digital back camera engraved with her milestone date.
+              </p>
+
+              <div class="space-y-1.5 pt-2">
+                <div class="flex justify-between text-[11px] font-mono text-zinc-400">
+                  <span>Status: Fully Claimed</span>
+                  <span>100%</span>
+                </div>
+                <div class="h-2 w-full bg-black/60 rounded-full overflow-hidden p-0.5 border border-white/10">
+                  <div class="h-full bg-rose-400 rounded-full" style="width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <button disabled class="mt-8 w-full py-3.5 rounded-xl bg-white/10 text-zinc-500 font-medium text-xs font-cinzel tracking-widest uppercase cursor-not-allowed">
+              Claimed Gift
+            </button>
+          </div>
+
+          <!-- Gift Item 3 -->
+          <div class="glass-card rounded-3xl p-8 flex flex-col justify-between border border-white/10 hover:border-rose-300/40 transition-all">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between text-xs font-mono text-zinc-400">
+                <span>Fine Dining</span>
+                <span class="px-3 py-1 rounded-full bg-blue-950 text-blue-300 border border-blue-800/50 font-sans font-medium text-[11px]">Available</span>
+              </div>
+              <h3 class="font-serif text-2xl text-white font-normal">Private Omakase Chef Table</h3>
+              <p class="text-xs text-zinc-400 leading-relaxed font-light">
+                20-course private chef tasting dinner experience for Sophia and close friends.
+              </p>
+
+              <div class="space-y-1.5 pt-2">
+                <div class="flex justify-between text-[11px] font-mono text-zinc-400">
+                  <span>Raised: $350</span>
+                  <span>Goal: $1,000</span>
+                </div>
+                <div class="h-2 w-full bg-black/60 rounded-full overflow-hidden p-0.5 border border-white/10">
+                  <div class="h-full bg-gradient-to-r from-rose-300 to-vault-accent rounded-full" style="width: 35%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="openGiftModal('Private Omakase Chef Table')" class="mt-8 w-full py-3.5 rounded-xl bg-white text-vault-950 font-medium text-xs font-cinzel tracking-widest uppercase hover:bg-zinc-200 transition-all shadow-lg">
+              Gift Experience
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GUEST BLESSINGS & MESSAGES FEED -->
+    <section id="blessings" class="py-24 px-6">
+      <div class="max-w-4xl mx-auto space-y-12">
+        
+        <div class="text-center space-y-4">
+          <span class="text-xs font-cinzel tracking-[0.3em] text-rose-300 uppercase block">Private Guestbook</span>
+          <h2 class="font-serif text-4xl sm:text-5xl text-white font-normal">Blessings & Birthday Notes</h2>
+        </div>
+
+        <!-- Add Message Form -->
+        <div class="glass-card p-8 rounded-3xl border border-white/10">
+          <h3 class="font-serif text-xl text-white mb-4">Leave a Private Birthday Wish</h3>
+          <form id="blessingForm" onsubmit="addBlessing(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input type="text" id="blessingName" required placeholder="Your Name" class="px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-rose-300" />
+              <input type="text" id="blessingRelation" placeholder="Relation (e.g. Architect Colleague)" class="px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-rose-300" />
+            </div>
+            <textarea id="blessingText" required rows="3" placeholder="Write your heartfelt message for Sophia..." class="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-rose-300"></textarea>
+            <button type="submit" class="px-8 py-3.5 rounded-xl bg-white text-vault-950 font-medium text-xs font-cinzel tracking-widest uppercase hover:bg-zinc-200 transition-all shadow-md">
+              Post Note to Vault
+            </button>
+          </form>
+        </div>
+
+        <!-- Messages Feed -->
+        <div id="blessingsFeed" class="space-y-4">
+          
+          <div class="glass-card p-6 rounded-2xl border border-white/5 space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-rose-200 font-semibold">Camille & Antoine — Paris</span>
+              <span class="text-zinc-500">3 hours ago</span>
+            </div>
+            <p class="text-sm text-zinc-300 font-light leading-relaxed">
+              "Happy 30th birthday Sophia! Your vision, art, and passion inspire everyone around you. Can’t wait to celebrate in Iceland with you soon!"
+            </p>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl border border-white/5 space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-rose-200 font-semibold">Aunt Claire</span>
+              <span class="text-zinc-500">Yesterday</span>
+            </div>
+            <p class="text-sm text-zinc-300 font-light leading-relaxed">
+              "To my brilliant niece — thirty years of beauty and elegance! Enjoy your Hasselblad camera, capture endless new memories!"
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Gifting Modal -->
+  <div id="giftModal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-xl hidden">
+    <div class="max-w-md w-full glass-modal p-8 rounded-3xl border border-white/10 text-center relative space-y-6">
+      <button onclick="closeGiftModal()" class="absolute top-5 right-5 text-zinc-400 hover:text-white text-xl">&times;</button>
+
+      <div class="w-12 h-12 mx-auto rounded-full bg-rose-950 text-rose-300 flex items-center justify-center border border-rose-800/40">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v13m0-13V3.75A2.25 2.25 0 009.75 1.5H7.5A2.25 2.25 0 005.25 3.75v.443c0 .546.198 1.07.56 1.478l4.44 5.079A2.25 2.25 0 0012 12.5h.25zm0-4.5h2.25A2.25 2.25 0 0116.5 3.75v.443c0 .546-.198 1.07-.56 1.478l-4.44 5.079A2.25 2.25 0 0112 12.5h-.25" />
+        </svg>
+      </div>
+
+      <div>
+        <h3 id="modalGiftTitle" class="font-serif text-2xl text-white">Gift Contribution</h3>
+        <p class="text-xs text-zinc-400 mt-1 font-light">Enter your contribution details for Sophia's registry.</p>
+      </div>
+
+      <div class="space-y-3 text-left">
+        <div>
+          <label class="text-[11px] font-cinzel text-zinc-400 block mb-1">Select Amount</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="setModalAmount('$100')" class="py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-mono text-xs">+$100</button>
+            <button onclick="setModalAmount('$250')" class="py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-mono text-xs">+$250</button>
+            <button onclick="setModalAmount('$500')" class="py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-mono text-xs">+$500</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-cinzel text-zinc-400 block mb-1">Your Name</label>
+          <input type="text" id="giftModalSender" placeholder="e.g. Marcus & Family" class="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-rose-300" />
+        </div>
+
+        <div>
+          <label class="text-[11px] font-cinzel text-zinc-400 block mb-1">Blessing Note</label>
+          <textarea id="giftModalNote" rows="2" placeholder="Wishing you an extraordinary 30th year..." class="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-rose-300"></textarea>
+        </div>
+      </div>
+
+      <button onclick="confirmGiftContribution()" class="w-full py-4 rounded-xl bg-white text-vault-950 font-medium text-xs font-cinzel tracking-widest uppercase hover:bg-zinc-200 transition-all shadow-lg">
+        Confirm & Send Gift
+      </button>
+    </div>
+  </div>
+
+  <footer class="py-12 px-6 border-t border-white/5 text-center text-xs text-zinc-500 font-light">
+    <p>VAEL Artifact Showcase — Personal Gift Site Demo Template</p>
+  </footer>
+
+  <script>
+    document.getElementById('gateForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      unlockGateDirect();
+    });
+
+    function unlockGateDirect() {
+      const modal = document.getElementById('gateModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => modal.classList.add('hidden'), 700);
+    }
+
+    let isPlaying = false;
+    function toggleAudioDemo() {
+      isPlaying = !isPlaying;
+      const playIcon = document.getElementById('playIcon');
+      const pauseIcon = document.getElementById('pauseIcon');
+      const statusText = document.getElementById('audioStatusText');
+      const bars = document.querySelectorAll('.audio-bar');
+
+      if (isPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+        statusText.innerText = 'Playing spatial memo...';
+        bars.forEach(bar => bar.classList.add('animate-pulse'));
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        statusText.innerText = 'Paused • Click play to preview';
+        bars.forEach(bar => bar.classList.remove('animate-pulse'));
+      }
+    }
+
+    function openGiftModal(title) {
+      document.getElementById('modalGiftTitle').innerText = title;
+      document.getElementById('giftModal').classList.remove('hidden');
+    }
+
+    function closeGiftModal() {
+      document.getElementById('giftModal').classList.add('hidden');
+    }
+
+    function setModalAmount(amt) {
+      alert('Selected contribution amount: ' + amt);
+    }
+
+    function confirmGiftContribution() {
+      const sender = document.getElementById('giftModalSender').value || 'Generous Friend';
+      const note = document.getElementById('giftModalNote').value || 'Happy 30th Birthday!';
+      
+      closeGiftModal();
+
+      const feed = document.getElementById('blessingsFeed');
+      const card = document.createElement('div');
+      card.className = 'glass-card p-6 rounded-2xl border border-rose-300/30 space-y-2';
+      card.innerHTML = `
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-rose-200 font-semibold">${sender} (Gift Contributed)</span>
+          <span class="text-zinc-400">Just Now</span>
+        </div>
+        <p class="text-sm text-zinc-200 font-light leading-relaxed">"${note}"</p>
+      `;
+      feed.prepend(card);
+    }
+
+    function addBlessing(e) {
+      e.preventDefault();
+      const name = document.getElementById('blessingName').value;
+      const rel = document.getElementById('blessingRelation').value;
+      const text = document.getElementById('blessingText').value;
+
+      const feed = document.getElementById('blessingsFeed');
+      const card = document.createElement('div');
+      card.className = 'glass-card p-6 rounded-2xl border border-white/10 space-y-2';
+      card.innerHTML = `
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-rose-200 font-semibold">${name} ${rel ? '— ' + rel : ''}</span>
+          <span class="text-zinc-500">Just Now</span>
+        </div>
+        <p class="text-sm text-zinc-300 font-light leading-relaxed">"${text}"</p>
+      `;
+      feed.prepend(card);
+
+      document.getElementById('blessingForm').reset();
+    }
+
+    function openMemoryModal(title, desc) {
+      alert(title + '\n\n' + desc);
+    }
+  </script>
+</body>
+</html>

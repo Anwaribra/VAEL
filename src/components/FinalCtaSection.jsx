@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, X, Check } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
+import LegalModals from './LegalModals';
 
 export default function FinalCtaSection() {
   const { isAr } = useLanguage();
@@ -9,6 +10,7 @@ export default function FinalCtaSection() {
   const [submitted, setSubmitted] = useState(false);
   const [email, setEmail] = useState('');
   const [occasion, setOccasion] = useState('Birthday');
+  const [legalTab, setLegalTab] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,9 +66,9 @@ export default function FinalCtaSection() {
           </div>
 
           <div className="flex gap-8 text-[#52525B] font-medium">
-            <a href="#" className="hover:text-[#0F0F12] transition-colors">{isAr ? 'سياسة الخصوصية' : 'Privacy Policy'}</a>
-            <a href="#" className="hover:text-[#0F0F12] transition-colors">{isAr ? 'شروط الخدمة' : 'Terms of Service'}</a>
-            <a href="#" className="hover:text-[#0F0F12] transition-colors">{isAr ? 'حماية البيانات' : 'Vault Security'}</a>
+            <button onClick={() => setLegalTab('privacy')} className="hover:text-[#0F0F12] transition-colors">{isAr ? 'سياسة الخصوصية' : 'Privacy Policy'}</button>
+            <button onClick={() => setLegalTab('terms')} className="hover:text-[#0F0F12] transition-colors">{isAr ? 'شروط الخدمة' : 'Terms of Service'}</button>
+            <button onClick={() => setLegalTab('security')} className="hover:text-[#0F0F12] transition-colors">{isAr ? 'حماية البيانات' : 'Vault Security'}</button>
           </div>
 
           <div>
