@@ -71,7 +71,7 @@ export default function ExperiencesSection() {
       highlights: [
         'تسلسل زمني للمحطات',
         'افتتاحية مفاجأة سينمائية',
-        'موسيقى خلفية كاستم',
+        'موسيقى خلفية مخصصة',
         'أرشيف رقمي دائم للأبد'
       ],
       link: '#showcase'

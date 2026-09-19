@@ -56,7 +56,7 @@ export default function HeroSection() {
           <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[1.1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
             {isAr ? (
               <>
-                سايت كاستم لمناسبتك.. <br />
+                موقع خاص لمناسبتك.. <br />
                 <em className="font-serif italic font-normal text-white/90">تحفة رقمية متفصلة عشان تعيش العمر كله.</em>
               </>
             ) : (
@@ -75,7 +75,7 @@ export default function HeroSection() {
             className="max-w-2xl mx-auto text-base sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed px-4 drop-shadow-md"
           >
             {isAr
-              ? 'مواقع ودعوات كاستم بتجربة سينمائية تفاعلية.. للهدايا الغالية، ودعوات الفرح، وأرشيف أجمل لحظاتكم.'
+              ? 'مواقع ودعوات مخصصة بتجربة سينمائية تفاعلية.. للهدايا الغالية، ودعوات الفرح، وأرشيف أجمل لحظاتكم.'
               : 'Custom digital portals for luxury gifts, ceremonial wedding invitations, and milestone archives.'}
           </motion.p>
 
