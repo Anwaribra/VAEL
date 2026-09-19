@@ -1,29 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Layers, FolderKanban, Globe, Moon, ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Globe, Home, Layers, MessageCircle } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 export default function Navbar() {
+  const { isAr, toggleLang } = useLanguage();
   const [isOverLight, setIsOverLight] = useState(false);
-  const { toggleLang, isAr } = useLanguage();
 
   useEffect(() => {
     const checkPosition = () => {
-      const heroElement = document.getElementById('hero-section');
-      if (heroElement) {
-        const rect = heroElement.getBoundingClientRect();
-        // The navbar floating pill sits at top: 20px, height ~56px.
-        // Its bottom boundary is at ~80px from top of viewport.
-        // If the bottom boundary of hero section is above 80px, navbar has crossed into light section content.
-        setIsOverLight(rect.bottom <= 85);
+      const hero = document.getElementById('hero-section');
+      if (!hero) {
+        setIsOverLight(true);
+        return;
+      }
+      const rect = hero.getBoundingClientRect();
+      // If the hero section's bottom edge is above 80px, navbar is over the light body background
+      if (rect.bottom <= 80) {
+        setIsOverLight(true);
       } else {
-        setIsOverLight(window.scrollY > 600);
+        setIsOverLight(false);
       }
     };
 
-    window.addEventListener('scroll', checkPosition, { passive: true });
-    window.addEventListener('resize', checkPosition, { passive: true });
     checkPosition();
+    window.addEventListener('scroll', checkPosition, { passive: true });
+    window.addEventListener('resize', checkPosition);
+
     const timer = setTimeout(checkPosition, 100);
 
     return () => {
@@ -36,12 +39,18 @@ export default function Navbar() {
   const navLinks = isAr ? [
     { name: 'الرئيسية', href: '#' },
     { name: 'النماذج الحية', href: '#showcase' },
-    { name: 'الباقات والأسعار', href: '#pricing' },
+    { name: 'الخدمات', href: '#idea' },
   ] : [
     { name: 'Home', href: '#' },
     { name: 'Demos', href: '#showcase' },
-    { name: 'Packages', href: '#pricing' },
+    { name: 'Services', href: '#idea' },
   ];
+
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+    isAr
+      ? 'مرحباً VAEL، حابب أستفسر عن تصميم موقع خاص/دعوة زفاف مخصصة'
+      : 'Hello VAEL, I would like to order a custom gift website / wedding invitation'
+  )}`;
 
   return (
     <>
@@ -114,15 +123,19 @@ export default function Navbar() {
               />
             </button>
 
+            {/* Direct WhatsApp CTA */}
             <a
-              href="#pricing"
-              className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider shadow-md transition-all hover:scale-105 hidden sm:inline-flex items-center ${
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider shadow-md transition-all hover:scale-105 hidden sm:inline-flex items-center gap-2 ${
                 isOverLight
                   ? 'bg-[#0F0F12] text-white hover:bg-black'
                   : 'bg-white/15 backdrop-blur-md border border-white/25 text-white hover:bg-white hover:text-black shadow-lg'
               }`}
             >
-              <span>{isAr ? 'احجز هديتك' : 'Order Gift'}</span>
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>{isAr ? 'اطلب عبر واتساب' : 'Order via WhatsApp'}</span>
             </a>
           </div>
         </div>
@@ -152,8 +165,14 @@ export default function Navbar() {
             <span className="text-[9px] font-mono uppercase tracking-widest">{isAr ? 'EN' : 'AR'}</span>
           </button>
 
-          <a href="#pricing" className="flex items-center justify-center bg-white text-black px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg hover:bg-zinc-200">
-            <span>{isAr ? 'طلب' : 'Order'}</span>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center bg-white text-black px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg hover:bg-zinc-200 gap-1"
+          >
+            <MessageCircle className="w-3 h-3" />
+            <span>{isAr ? 'واتساب' : 'WhatsApp'}</span>
           </a>
         </motion.div>
       </div>

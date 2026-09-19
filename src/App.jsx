@@ -4,7 +4,6 @@ import HeroSection from './components/HeroSection';
 import IdeaSection from './components/IdeaSection';
 import ExperiencesSection from './components/ExperiencesSection';
 import ShowcaseSection from './components/ShowcaseSection';
-import PricingSection from './components/PricingSection';
 import SignatureMomentSection from './components/SignatureMomentSection';
 import FinalCtaSection from './components/FinalCtaSection';
 import { LanguageProvider } from './LanguageContext';
@@ -26,7 +25,6 @@ export default function App() {
           <IdeaSection />
           <ExperiencesSection />
           <ShowcaseSection />
-          <PricingSection />
           <SignatureMomentSection />
           <FinalCtaSection />
         </main>
@@ -35,4 +33,3 @@ export default function App() {
     </LanguageProvider>
   );
 }
-
