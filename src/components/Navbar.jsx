@@ -46,7 +46,7 @@ export default function Navbar() {
     { name: 'Services', href: '#idea' },
   ];
 
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+  const whatsappUrl = `https://wa.me/201144162459?text=${encodeURIComponent(
     isAr
       ? 'مرحباً VAEL، حابب أستفسر عن تصميم موقع خاص/دعوة زفاف مخصصة'
       : 'Hello VAEL, I would like to order a custom gift website / wedding invitation'

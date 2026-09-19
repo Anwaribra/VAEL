@@ -97,7 +97,7 @@ export default function HeroSection() {
 
             {/* Secondary Liquid Glass Button */}
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(isAr ? 'مرحباً VAEL، حابب أطلب موقع خاص/دعوة زفاف مخصصة' : 'Hello VAEL, I would like to order a custom website / wedding invitation')}`}
+              href={`https://wa.me/201144162459?text=${encodeURIComponent(isAr ? 'مرحباً VAEL، حابب أطلب موقع خاص/دعوة زفاف مخصصة' : 'Hello VAEL, I would like to order a custom website / wedding invitation')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-9 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/25 text-white font-semibold text-xs sm:text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 shadow-lg hover:scale-105"

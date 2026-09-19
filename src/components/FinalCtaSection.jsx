@@ -48,7 +48,7 @@ export default function FinalCtaSection() {
         {/* Refined Single Action Button */}
         <div className="mt-12 flex justify-center gap-4 flex-wrap">
           <a
-            href={`https://wa.me/?text=${encodeURIComponent(isAr ? 'مرحباً، أرغب في طلب موقع خاص لمناسبتي' : 'Hello, I would like to order a custom digital website for my occasion.')}`}
+            href={`https://wa.me/201144162459?text=${encodeURIComponent(isAr ? 'مرحباً، أرغب في طلب موقع خاص لمناسبتي' : 'Hello, I would like to order a custom digital website for my occasion.')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-4 px-12 py-6 rounded-full bg-[#0F0F12] text-white font-bold text-base sm:text-lg uppercase tracking-wider shadow-2xl hover:bg-black transition-all duration-300 hover:scale-105"
