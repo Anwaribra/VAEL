@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: light;
+    font-size: 16px; /* 100% font scale */
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    background-color: #F5F5F7;
+  }
+
+  body {
+    background-color: #F5F5F7;
+    color: #0F0F12;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F5F7;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4D4D8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A1A1AA;
+}
+
+/* Metallic & Obsidian Gradients */
+.text-obsidian-gradient {
+  background: linear-gradient(135deg, #0F0F12 0%, #27272A 50%, #3F3F46 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-silver-metallic {
+  background: linear-gradient(135deg, #18181B 0%, #52525B 50%, #71717A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Authentic Liquid Glass Styling - Light Studio Style */
+.liquid-glass-light {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.liquid-glass-nav-light {
+  background: rgba(245, 245, 247, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Chrome Shimmer Animation */
+@keyframes chromeShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.chrome-shimmer {
+  background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0) 100%);
+  background-size: 200% 100%;
+  animation: chromeShimmer 4s infinite linear;
+}
+
+/* Ambient Ambient Radial Glow */
+.bg-ambient-light-radial {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 247, 1) 75%);
+}
