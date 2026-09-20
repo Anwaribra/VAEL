@@ -6,7 +6,7 @@ import { useLanguage } from '../LanguageContext';
 export default function ShowcaseSection() {
   const { isAr } = useLanguage();
   const [activeTab, setActiveTab] = useState('wedding');
-  const [unlocked, setUnlocked] = useState(false);
+  const [unlocked, setUnlocked] = useState(true);
   const [passphrase, setPassphrase] = useState('');
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [envelopeOpen, setEnvelopeOpen] = useState(false);

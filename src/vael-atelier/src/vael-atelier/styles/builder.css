@@ -1,0 +1,361 @@
+/* =====================================================================
+   Invitation builder
+   Desktop: elements | live preview | settings.  Mobile: one column,
+   with the preview and the settings as bottom sheets.
+   ===================================================================== */
+
+.vael-builder {
+  --vc-focus: #7a1f33;
+  --vc-line: rgba(34, 22, 26, 0.16);
+  position: relative;
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr) 350px;
+  /* Set --vael-builder-offset to the navbar height so the builder fits under it. */
+  height: calc(100dvh - var(--vael-builder-offset, 0px));
+  min-height: 640px;
+  background: var(--vc-linen);
+  color: var(--vc-ink);
+}
+
+.vael-builder__left,
+.vael-builder__right {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1.6rem 1.4rem 2.5rem;
+  background: var(--vc-linen);
+}
+.vael-builder__left { border-inline-end: 1px solid var(--vc-line); }
+.vael-builder__right { border-inline-start: 1px solid var(--vc-line); }
+
+/* ---------------------------------------------------------------- panels */
+
+.vael-panel { margin-bottom: 2.2rem; }
+.vael-panel__title {
+  font-family: var(--vc-display);
+  font-size: 1.55rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+[dir="rtl"] .vael-panel__title { font-family: var(--vc-arabic); line-height: 1.4; }
+.vael-panel__hint { margin-top: 0.35rem; margin-bottom: 0.9rem; font-size: 0.88rem; color: var(--vc-ink-dim); }
+.vael-panel__empty { font-size: 0.95rem; color: var(--vc-ink-dim); }
+
+.vael-builder__design-summary { display: none; margin-bottom: 1.6rem; }
+.vael-builder__design-name { font-family: var(--vc-display); font-size: 1.5rem; font-weight: 500; }
+
+/* Elements */
+.vael-pal-list { border-top: 1px solid var(--vc-line); }
+.vael-pal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--vc-line);
+}
+.vael-pal.is-dragging { opacity: 0.4; }
+.vael-pal__drag {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 2.9rem;
+  padding: 0.4rem 0.2rem;
+  border: 0;
+  background: transparent;
+  text-align: start;
+  cursor: grab;
+  touch-action: manipulation;
+}
+.vael-pal__drag:active { cursor: grabbing; }
+.vael-pal__drag svg { color: var(--vc-ink-dim); }
+
+/* Structure */
+.vael-rows { border-top: 1px solid var(--vc-line); }
+.vael-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  border-bottom: 1px solid var(--vc-line);
+  border-inline-start: 3px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.vael-row.is-selected { background: rgba(122, 31, 51, 0.07); border-inline-start-color: var(--vc-brass); }
+.vael-row.is-dragging { opacity: 0.35; }
+.vael-row.is-hidden .vael-row__name { font-style: italic; opacity: 0.55; }
+.vael-row__grip {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2.9rem;
+  border: 0;
+  background: transparent;
+  color: var(--vc-ink-dim);
+  cursor: grab;
+  touch-action: none;
+}
+.vael-row__main {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0.4rem 0.3rem;
+  border: 0;
+  background: transparent;
+  text-align: start;
+}
+.vael-row__tag { font-size: 0.8rem; color: var(--vc-ink-dim); }
+.vael-row__actions { display: flex; }
+.vael-row__actions .vael-iconbtn { width: 2rem; height: 2rem; }
+
+.vael-row.drop-before::before,
+.vael-row.drop-after::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 2px;
+  background: #7a1f33;
+  z-index: 2;
+}
+.vael-row.drop-before::before { top: -1px; }
+.vael-row.drop-after::after { bottom: -1px; }
+
+.vael-endzone { min-height: 0.9rem; font-size: 0.85rem; color: var(--vc-ink-dim); text-align: center; }
+.vael-endzone.is-live { min-height: 2.6rem; display: grid; place-items: center; border: 1px dashed rgba(34, 22, 26, 0.3); margin-top: 0.6rem; }
+.vael-endzone.is-over { border-color: #7a1f33; color: #7a1f33; }
+
+/* ---------------------------------------------------------------- stage */
+
+.vael-builder__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background-color: var(--v-stage);
+  transition: background-color 0.6s ease;
+  color: var(--vc-paper);
+  --vc-focus: var(--vc-brass-light);
+}
+.vael-builder__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.14), transparent 40%, rgba(0, 0, 0, 0.3)),
+    radial-gradient(90% 60% at 20% 0%, rgba(255, 255, 255, 0.1), transparent 70%);
+}
+.vael-stage__bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 1.25rem;
+  background: rgba(20, 10, 14, 0.58);
+  color: var(--vc-paper);
+}
+.vael-stage__name { font-family: var(--vc-display); font-size: 1.2rem; font-weight: 500; }
+.vael-stage__replay { min-height: 2.2rem; font-size: 0.9rem; }
+.vael-stage__canvas {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  padding: 2.5rem 2rem 5rem;
+}
+.vael-stage__paper { position: relative; width: min(540px, 100%); margin: auto; }
+.vael-stage__empty {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  text-align: center;
+  color: var(--vc-ink-dim);
+  z-index: 3;
+}
+
+/* preview blocks: click to select, drop targets while dragging */
+.previewBlock { position: relative; max-width: 100%; cursor: pointer; }
+.previewBlock:hover { outline: 1px dashed rgba(168, 137, 85, 0.55); outline-offset: 6px; }
+.previewBlock--selected {
+  outline: 1px solid rgba(168, 137, 85, 0.75);
+  outline-offset: 6px;
+}
+.previewBlock.drop-before::before,
+.previewBlock.drop-after::after {
+  content: "";
+  position: absolute;
+  inset-inline: -5cqw;
+  height: 2px;
+  background: #e0c58a;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+.previewBlock.drop-before::before { top: -2.4cqw; }
+.previewBlock.drop-after::after { bottom: -2.4cqw; }
+/* a target under the last block, sized to overlap the flex gap so nothing shifts */
+.vael-preview-end { height: 7cqw; margin-top: -3.8cqw; width: 100%; pointer-events: none; }
+
+/* status */
+.vael-toast {
+  position: fixed;
+  z-index: 90;
+  bottom: 1.5rem;
+  inset-inline: 0;
+  margin-inline: auto;
+  width: max-content;
+  max-width: min(92vw, 30rem);
+  padding: 0.65rem 1.1rem;
+  background: var(--vc-oxblood-deep);
+  color: var(--vc-paper);
+  font-size: 0.92rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.vael-toast[data-show="true"] { opacity: 1; transform: none; }
+
+/* ------------------------------------------------------------- inspector */
+
+.vael-inspector__tabs {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-bottom: 1.4rem;
+  border-bottom: 1px solid var(--vc-line);
+}
+.vael-inspector__tabs [role="tab"] {
+  padding: 0.6rem 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--vc-ink-dim);
+  font-weight: 500;
+}
+.vael-inspector__tabs [role="tab"][aria-selected="true"] { color: var(--vc-ink); border-bottom-color: var(--vc-brass); }
+.vael-sheet__close { display: none; margin-inline-start: auto; }
+
+.vael-inspector__title { font-family: var(--vc-display); font-size: 1.55rem; font-weight: 500; margin-bottom: 1.2rem; }
+[dir="rtl"] .vael-inspector__title { font-family: var(--vc-arabic); }
+
+.vael-field { margin-bottom: 1.3rem; }
+.vael-field label,
+.vael-field__label { display: block; margin-bottom: 0.15rem; font-size: 0.86rem; color: var(--vc-ink-dim); }
+.vael-field input[type="text"],
+.vael-field input[type="url"],
+.vael-field input[type="date"],
+.vael-field input[type="time"],
+.vael-field select,
+.vael-field textarea {
+  width: 100%;
+  padding: 0.55rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(34, 22, 26, 0.4);
+  border-radius: 0;
+  background: transparent;
+  font-size: 1rem;
+  color: var(--vc-ink);
+}
+.vael-field textarea { padding: 0.6rem 0.7rem; border: 1px solid rgba(34, 22, 26, 0.4); resize: vertical; line-height: 1.5; }
+.vael-field input:focus-visible,
+.vael-field select:focus-visible,
+.vael-field textarea:focus-visible { outline-offset: 2px; }
+.vael-field input:focus:not([type="file"]),
+.vael-field select:focus,
+.vael-field textarea:focus { border-color: #7a1f33; box-shadow: 0 1px 0 #7a1f33; }
+.vael-check { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.3rem; font-size: 0.95rem; }
+.vael-check input { width: 1.1rem; height: 1.1rem; accent-color: var(--vc-oxblood); }
+
+.vael-filebtn { display: inline-block; margin-top: 0.4rem; cursor: pointer; }
+.vael-filebtn input:focus + .vael-btn { outline: 2px solid var(--vc-focus); outline-offset: 3px; }
+.vael-field .vael-btn--quiet { display: inline-flex; margin-inline-start: 1rem; }
+
+/* design switcher */
+.vael-design__group { margin-bottom: 1.6rem; }
+.vael-design__label { margin-bottom: 0.6rem; font-size: 0.9rem; font-weight: 500; color: var(--vc-ink-dim); }
+.vael-design__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+.vael-design__tile { position: relative; border: 1px solid transparent; padding: 0.35rem; transition: border-color 0.2s ease; }
+.vael-design__tile.is-current { border-color: var(--vc-brass); }
+.vael-design__thumb { display: grid; align-content: center; aspect-ratio: 1 / 1.36; padding: 11% 13%; }
+.vael-design__thumb .vael-inv { box-shadow: 0 14px 18px -12px rgba(0, 0, 0, 0.6); }
+.vael-design__name {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.2rem 0;
+  border: 0;
+  background: transparent;
+  text-align: start;
+  font-size: 0.92rem;
+}
+.vael-design__name::after { content: ""; position: absolute; inset: 0; }
+.vael-design__tile:hover { border-color: rgba(34, 22, 26, 0.3); }
+.vael-design__tile.is-current:hover { border-color: var(--vc-brass); }
+
+/* drag chip */
+.vael-dragchip {
+  padding: 0.6rem 1.1rem;
+  background: var(--vc-oxblood);
+  color: var(--vc-paper);
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+  cursor: grabbing;
+  width: 11rem;
+  text-align: center;
+}
+
+.vael-builder__bar { display: none; }
+
+/* ---------------------------------------------------------------- mobile */
+
+@media (max-width: 900px) {
+  .vael-builder { display: block; height: auto; min-height: 0; padding-bottom: 5.5rem; }
+  .vael-builder__left { overflow: visible; padding: 1.25rem 1.1rem 2rem; border: 0; }
+  .vael-builder__design-summary { display: block; padding-bottom: 1.2rem; border-bottom: 1px solid var(--vc-line); }
+
+  .vael-builder__stage,
+  .vael-builder__right {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 60;
+    visibility: hidden;
+    transform: translateY(102%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.35s;
+  }
+  .vael-builder__stage { top: 5dvh; }
+  .vael-builder__right { max-height: 74dvh; padding-bottom: calc(2rem + env(safe-area-inset-bottom)); box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.3); border: 0; }
+  .vael-builder__stage[data-open="true"],
+  .vael-builder__right[data-open="true"] {
+    visibility: visible;
+    transform: none;
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s;
+  }
+  .vael-sheet__close { display: inline-grid; }
+  .vael-stage__bar .vael-sheet__close { color: var(--vc-paper); }
+  .vael-stage__canvas { padding: 1.5rem 1.25rem 4rem; }
+
+  .vael-builder__bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+    background: var(--vc-linen);
+    border-top: 1px solid var(--vc-line);
+  }
+  .vael-builder__bar .vael-btn { flex: 1; }
+  .vael-builder__scrim { position: fixed; inset: 0; z-index: 55; background: rgba(10, 4, 6, 0.55); }
+  .vael-toast { bottom: 5.5rem; }
+  .vael-row__actions .vael-iconbtn { width: 2.4rem; height: 2.4rem; }
+}

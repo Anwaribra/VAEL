@@ -1,0 +1,114 @@
+/* =====================================================================
+   VAEL atelier: shared tokens and controls
+   Everything is namespaced under .vael-atelier / .vael-* so it cannot
+   collide with the host app's CSS.
+   ===================================================================== */
+
+.vael-atelier {
+  --vc-ui: var(--vael-font-ui, "Jost", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", sans-serif);
+  --vc-display: var(--vael-font-ui-display, "Cormorant Garamond", "Cormorant", "Playfair Display", Georgia, "Times New Roman", serif);
+  --vc-arabic: var(--vael-font-arabic, "Amiri", "Noto Naskh Arabic", "Cairo", serif);
+
+  --vc-oxblood: #4a0f1e;
+  --vc-oxblood-deep: #170b0f;
+  --vc-paper: #efe6d6;
+  --vc-paper-dim: rgba(239, 230, 214, 0.68);
+  --vc-linen: #ece6db;
+  --vc-ink: #22161a;
+  --vc-ink-dim: rgba(34, 22, 26, 0.68);
+  --vc-brass: #a88955;
+  --vc-brass-light: #e0c58a;
+  --vc-focus: #e0c58a;
+
+  font-family: var(--vc-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.vael-atelier[dir="rtl"] { font-family: var(--vc-ui), var(--vc-arabic); }
+.vael-atelier *,
+.vael-atelier *::before,
+.vael-atelier *::after { box-sizing: border-box; }
+.vael-atelier :where(h1, h2, h3, h4, p, ul, ol, figure) { margin: 0; padding: 0; }
+.vael-atelier :where(ul, ol) { list-style: none; }
+.vael-atelier :where(button, input, textarea, select) { font: inherit; color: inherit; }
+.vael-atelier :where(button) { cursor: pointer; }
+
+.vael-atelier :focus-visible {
+  outline: 2px solid var(--vc-focus);
+  outline-offset: 3px;
+}
+
+.vael-vh {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.vael-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 2.9rem;
+  padding: 0.7rem 1.5rem;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  background: transparent;
+  color: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.vael-btn--solid {
+  background: var(--vc-paper);
+  border-color: var(--vc-paper);
+  color: #2a0c14;
+}
+.vael-btn--solid:hover { background: var(--vc-brass-light); border-color: var(--vc-brass-light); }
+.vael-btn--ink {
+  background: var(--vc-oxblood);
+  border-color: var(--vc-oxblood);
+  color: var(--vc-paper);
+}
+.vael-btn--ink:hover { background: #64182b; border-color: #64182b; }
+.vael-btn--quiet { border-color: transparent; padding-inline: 0.2rem; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.35em; }
+.vael-btn--quiet:hover { text-decoration-thickness: 2px; }
+.vael-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.vael-iconbtn {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  color: inherit;
+  transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+.vael-iconbtn:hover:not(:disabled) { border-color: currentColor; }
+.vael-iconbtn:disabled { opacity: 0.28; cursor: not-allowed; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vael-atelier,
+  .vael-atelier *,
+  .vael-atelier *::before,
+  .vael-atelier *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

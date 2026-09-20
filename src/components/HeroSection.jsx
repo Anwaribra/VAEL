@@ -56,18 +56,18 @@ export default function HeroSection() {
           <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[1.1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
             {isAr ? (
               <>
-                موقع خاص لمناسبتك.. <br />
-                <em className="font-serif italic font-normal text-white/90">تحفة رقمية متفصلة عشان تعيش العمر كله.</em>
+                دعوة مصممة، <br />
+                <em className="font-serif italic font-normal text-white/90">تناسب لحظتكم.</em>
               </>
             ) : (
               <>
-                Woven by Light... <br />
-                <em className="font-serif italic font-normal text-white/90">Digital Portals for Eternity.</em>
+                An invitation, <br />
+                <em className="font-serif italic font-normal text-white/90">made personal.</em>
               </>
             )}
           </h1>
 
-          {/* Subtitle - Clean Editorial Paragraph (No Pill Container) */}
+          {/* Subtitle - Clean Editorial Paragraph */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,38 +75,35 @@ export default function HeroSection() {
             className="max-w-2xl mx-auto text-base sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed px-4 drop-shadow-md"
           >
             {isAr
-              ? 'مواقع ودعوات مخصصة بتجربة سينمائية تفاعلية.. للهدايا الغالية، ودعوات الفرح، وأرشيف أجمل لحظاتكم.'
-              : 'Custom digital portals for luxury gifts, ceremonial wedding invitations, and milestone archives.'}
+              ? 'نصمم دعوات رقمية ومواقع مخصصة تناسب لحظتكم الاستثنائية.'
+              : 'Crafting bespoke digital invitations and luxury websites for your meaningful occasions.'}
           </motion.p>
 
-          {/* Action Buttons - Liquid Glass Design Language */}
+          {/* Action Buttons - Pure Editorial Hierarchy */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-wrap justify-center gap-4 pt-2"
+            className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 pt-4"
           >
-            {/* Primary Solid White Button */}
+            {/* Primary Solid Pill Button */}
             <a
-              href="#showcase"
-              className="px-9 py-4 rounded-full bg-white text-black font-semibold text-xs sm:text-sm uppercase tracking-wider shadow-2xl hover:bg-zinc-200 transition-all duration-300 flex items-center gap-2.5 hover:scale-105"
-            >
-              <Play className="w-4 h-4 fill-black text-black" />
-              <span>{isAr ? 'جرب الديموهات الحية بنفسك' : 'Explore Live Demos'}</span>
-            </a>
-
-            {/* Secondary Liquid Glass Button */}
-            <a
-              href={`https://wa.me/201144162459?text=${encodeURIComponent(isAr ? 'مرحباً VAEL، حابب أطلب موقع خاص/دعوة زفاف مخصصة' : 'Hello VAEL, I would like to order a custom website / wedding invitation')}`}
+              href={`https://wa.me/201144162459?text=${encodeURIComponent(isAr ? 'مرحباً، حابب أستفسر عن تصميم موقع خاص/دعوة مخصصة' : 'Hello, I would like to order a custom website / bespoke invitation')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-9 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/25 text-white font-semibold text-xs sm:text-sm uppercase tracking-wider hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 shadow-lg hover:scale-105"
+              className="px-8 py-3.5 rounded-full bg-[#F5F5F7] text-[#08080A] font-medium text-sm sm:text-base hover:bg-white transition-all duration-300 shadow-xl hover:scale-105"
             >
-              <span>{isAr ? 'اطلب عبر واتساب' : 'Order via WhatsApp'}</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <span>{isAr ? 'تواصل معنا لطلب موقعك' : 'Inquire Bespoke Website'}</span>
+            </a>
+
+            <a
+              href="#showcase"
+              className="text-zinc-300 hover:text-white font-medium text-sm sm:text-base underline underline-offset-8 decoration-zinc-500 hover:decoration-white transition-colors flex items-center gap-1.5"
+            >
+              <span>{isAr ? 'شاهد أعمالنا الحية' : 'Explore Live Showcase'}</span>
+              <ArrowUpRight className="w-4 h-4 opacity-70" />
             </a>
           </motion.div>
-
         </div>
 
       </motion.section>

@@ -1,0 +1,5 @@
+/* Import this once, anywhere in the app (for example from your root layout). */
+@import "./base.css";
+@import "./invitation.css";
+@import "./collection.css";
+@import "./builder.css";

@@ -1,0 +1,559 @@
+/* =====================================================================
+   VAEL invitation renderer
+   One stylesheet drives every design. Everything scales with the width of
+   the card itself (container query units), so the same markup renders as a
+   thumbnail, a gallery card, a drawer preview or the builder canvas.
+   No raster images. No external requests.
+   ===================================================================== */
+
+.vael-inv {
+  /* Typefaces. Override --vael-font-* on :root to use VAEL's own fonts. */
+  --v-display: var(--vael-font-editorial, "Cormorant Garamond", "Cormorant", "Playfair Display", Georgia, "Times New Roman");
+  --v-body: var(--v-display);
+  --dirx: 1;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  container-type: inline-size;
+  container-name: vael-inv;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--v-surface);
+  color: var(--v-fg);
+  font-family: var(--v-body), "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 34px 60px -30px rgba(0, 0, 0, 0.6),
+    0 10px 20px -10px rgba(0, 0, 0, 0.35);
+}
+.vael-inv[dir="rtl"] { --dirx: -1; }
+
+.vael-inv[data-type="didone"] {
+  --v-display: var(--vael-font-didone, "Bodoni Moda", "Playfair Display", "Didot", Georgia);
+  --v-body: var(--vael-font-editorial, "Cormorant Garamond", "Cormorant", Georgia);
+}
+.vael-inv[data-type="humanist-serif"] {
+  --v-display: var(--vael-font-humanist, "EB Garamond", "Iowan Old Style", Georgia);
+  --v-body: var(--v-display);
+}
+.vael-inv[data-type="modern-grotesk"] {
+  --v-display: var(--vael-font-grotesk, "Jost", "Helvetica Neue", Arial);
+  --v-body: var(--v-display);
+  font-weight: 400;
+}
+.vael-inv[data-type="script-accent"] {
+  --v-display: var(--vael-font-editorial, "Cormorant Garamond", "Cormorant", Georgia);
+  --v-body: var(--vael-font-grotesk, "Jost", "Helvetica Neue", Arial);
+}
+
+/* ------------------------------------------------------------- material */
+
+.vael-inv__material,
+.vael-inv__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.vael-inv__material {
+  z-index: 0;
+  transform-origin: 50% 40%;
+  animation: vael-material-in 0.6s ease both;
+}
+.vael-inv__layer--a { z-index: 0; }
+.vael-inv__layer--b { z-index: 1; }
+
+/* paper */
+[data-material="paper"] .vael-inv__layer--a {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0.015) 55%, rgba(130, 110, 80, 0.07));
+}
+[data-material="paper"] .vael-inv__layer--b {
+  background-image: var(--v-noise);
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+}
+
+/* obsidian */
+[data-material="obsidian"] .vael-inv__layer--a {
+  background:
+    radial-gradient(120% 70% at 18% 0%, rgba(255, 255, 255, 0.1), transparent 55%),
+    linear-gradient(205deg, rgba(255, 255, 255, 0.035), transparent 42%, rgba(0, 0, 0, 0.45));
+}
+[data-material="obsidian"] .vael-inv__layer--b {
+  background-image: var(--v-noise);
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+}
+
+/* sand + geometry */
+[data-material="sand-geometry"] .vael-inv__layer--a {
+  background:
+    radial-gradient(90% 70% at 50% 42%, transparent 38%, rgba(84, 70, 24, 0.3)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 40%);
+}
+[data-material="sand-geometry"] .vael-inv__layer--b {
+  background-image: var(--v-lattice);
+  background-size: 15cqw 15cqw;
+  background-position: center;
+  opacity: 0.4;
+  -webkit-mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, transparent 30%, #000 92%);
+  mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, transparent 30%, #000 92%);
+}
+
+/* linen + hairline */
+[data-material="linen-line"] .vael-inv__layer--a {
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0 7.6cqw,
+    color-mix(in srgb, var(--v-fg) 7%, transparent) 7.6cqw calc(7.6cqw + 1px)
+  );
+}
+[data-material="linen-line"] .vael-inv__layer--b {
+  background: linear-gradient(
+    to right,
+    transparent 9.6cqw,
+    color-mix(in srgb, var(--v-fg) 22%, transparent) 9.6cqw calc(9.6cqw + 1px),
+    transparent calc(9.6cqw + 1px)
+  );
+}
+[data-material="linen-line"][dir="rtl"] .vael-inv__layer--b {
+  background: linear-gradient(
+    to left,
+    transparent 9.6cqw,
+    color-mix(in srgb, var(--v-fg) 22%, transparent) 9.6cqw calc(9.6cqw + 1px),
+    transparent calc(9.6cqw + 1px)
+  );
+}
+
+/* pearl */
+[data-material="pearl"] .vael-inv__layer--a {
+  background:
+    radial-gradient(60% 45% at 20% 12%, rgba(255, 255, 255, 0.9), transparent 70%),
+    radial-gradient(50% 40% at 85% 88%, rgba(196, 172, 188, 0.4), transparent 70%),
+    radial-gradient(45% 35% at 92% 14%, rgba(176, 196, 224, 0.32), transparent 70%);
+}
+[data-material="pearl"] .vael-inv__layer--b {
+  background: conic-gradient(
+    from 210deg at 30% 20%,
+    rgba(255, 255, 255, 0.55),
+    rgba(226, 196, 214, 0.28),
+    rgba(184, 205, 232, 0.28),
+    rgba(255, 255, 255, 0.55)
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+}
+
+/* moonlit */
+[data-material="moonlit"] .vael-inv__layer--a {
+  background:
+    radial-gradient(circle at 72% 13%, #f6f3dc 0 2.6cqw, rgba(246, 243, 220, 0) 2.9cqw),
+    radial-gradient(34% 20% at 72% 13%, rgba(238, 240, 214, 0.5), rgba(238, 240, 214, 0.1) 50%, transparent 72%),
+    linear-gradient(180deg, #08110f 0%, #112326 46%, #1b3437 100%);
+}
+[data-material="moonlit"] .vael-inv__layer--b {
+  background: var(--v-trees) center bottom / cover no-repeat;
+  opacity: 0.85;
+}
+
+/* palm house */
+[data-material="palm-shadow"] .vael-inv__layer--a {
+  background:
+    radial-gradient(70% 50% at 20% 8%, rgba(255, 247, 216, 0.75), transparent 70%),
+    linear-gradient(160deg, #f6eedb, #eadfc6 72%);
+}
+[data-material="palm-shadow"] .vael-inv__layer--b {
+  inset: -5cqw;
+  background: var(--v-leaves) center / cover no-repeat;
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+}
+
+/* velvet */
+[data-material="velvet"] .vael-inv__layer--a {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 30%, transparent 68%, rgba(0, 0, 0, 0.5)),
+    repeating-linear-gradient(90deg, #35091a 0, #521323 2.7cqw, #290813 5.4cqw),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0, transparent 4.3cqw, rgba(255, 255, 255, 0.035) 8cqw);
+}
+[data-material="velvet"] .vael-inv__layer--b {
+  background:
+    radial-gradient(60% 40% at 50% 30%, rgba(184, 147, 90, 0.14), transparent 70%),
+    var(--v-noise);
+  mix-blend-mode: soft-light;
+  opacity: 0.8;
+}
+
+/* celestial */
+[data-material="celestial"] .vael-inv__layer--a {
+  background:
+    radial-gradient(60% 38% at 50% 100%, rgba(122, 112, 206, 0.28), transparent 70%),
+    linear-gradient(180deg, #050822 0%, #0b1030 55%, #151c50 100%);
+}
+[data-material="celestial"] .vael-inv__layer--b {
+  background: var(--v-stars) center / cover no-repeat;
+  opacity: 0.9;
+  /* keep the sky quiet behind the writing */
+  -webkit-mask-image: radial-gradient(ellipse 62% 48% at 50% 58%, rgba(0, 0, 0, 0.22), #000 90%);
+  mask-image: radial-gradient(ellipse 62% 48% at 50% 58%, rgba(0, 0, 0, 0.22), #000 90%);
+}
+
+/* azure */
+[data-material="azure"] .vael-inv__layer--a {
+  background:
+    radial-gradient(80% 34% at 30% 6%, rgba(255, 255, 255, 0.34), transparent 70%),
+    radial-gradient(60% 28% at 82% 94%, rgba(180, 226, 255, 0.28), transparent 70%),
+    linear-gradient(165deg, #0a3068 0%, #124a92 58%, #2a73bc 100%);
+}
+[data-material="azure"] .vael-inv__layer--b {
+  inset: -4cqw;
+  background: var(--v-waves) center / cover no-repeat;
+  opacity: 0.8;
+}
+
+/* -------------------------------------------------------------- content */
+
+.vael-inv__content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.8cqw;
+  padding: 25cqw 10cqw 9cqw;
+  text-align: center;
+}
+
+.vael-blk { max-width: 100%; }
+
+.vael-placeholder { opacity: 0.5; font-style: italic; }
+
+.vael-names {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqw;
+  font-family: var(--v-display), "Amiri", "Noto Naskh Arabic", serif;
+  font-size: 12cqw;
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.vael-names__and {
+  font-size: 5.2cqw;
+  font-style: italic;
+  font-weight: 400;
+  color: color-mix(in srgb, var(--v-accent) 60%, var(--v-fg));
+  line-height: 1.3;
+}
+.vael-line,
+.vael-message,
+.vael-date,
+.vael-time,
+.vael-map,
+.vael-mark,
+.vael-rsvp__note,
+.vael-venue p { margin: 0; }
+
+.vael-line {
+  max-width: 64cqw;
+  font-size: 3.6cqw;
+  line-height: 1.62;
+  color: var(--v-muted);
+}
+.vael-date {
+  font-family: var(--v-display), "Amiri", "Noto Naskh Arabic", serif;
+  font-size: 5.6cqw;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+.vael-time { font-size: 3.9cqw; color: var(--v-muted); }
+.vael-venue__name {
+  font-family: var(--v-display), "Amiri", "Noto Naskh Arabic", serif;
+  font-size: 4.8cqw;
+  line-height: 1.2;
+}
+.vael-venue .vael-venue__address { margin-top: 0.8cqw; font-size: 3.3cqw; color: var(--v-muted); }
+.vael-map { font-size: 3.3cqw; }
+.vael-link {
+  color: color-mix(in srgb, var(--v-accent) 45%, var(--v-fg));
+  text-decoration: underline;
+  text-underline-offset: 0.7cqw;
+  text-decoration-thickness: 1px;
+}
+.vael-message {
+  max-width: 60cqw;
+  font-size: 3.9cqw;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.vael-photo {
+  margin: 0;
+  width: 46cqw;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--v-fg) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--v-accent) 65%, transparent);
+}
+.vael-photo--arch { border-radius: 23cqw 23cqw 0 0; }
+.vael-photo--oval { border-radius: 50%; }
+.vael-photo--rectangle { border-radius: 0; }
+.vael-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.vael-photo__empty { padding: 4cqw; font-size: 3.2cqw; font-style: italic; color: var(--v-muted); }
+
+.vael-rsvp { display: flex; flex-direction: column; align-items: center; gap: 2cqw; }
+.vael-rsvp__button {
+  display: inline-block;
+  padding: 1.9cqw 6.4cqw;
+  border: 1px solid var(--v-accent);
+  color: var(--v-fg);
+  font-size: 3.5cqw;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+.vael-rsvp__note { font-size: 3cqw; color: var(--v-muted); }
+
+.vael-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4cqw;
+  font-size: 2.8cqw;
+  font-style: italic;
+  color: var(--v-muted);
+}
+.vael-mark__glyph {
+  display: inline-grid;
+  place-items: center;
+  width: 4.4cqw;
+  height: 4.4cqw;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 2.6cqw;
+  font-style: normal;
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------------- seal */
+
+.vael-seal {
+  position: absolute;
+  z-index: 3;
+  top: 7cqw;
+  inset-inline-start: 50%;
+  width: 15cqw;
+  aspect-ratio: 1;
+  margin-inline-start: -7.5cqw;
+  border-radius: 50%;
+  overflow: hidden;
+  filter: drop-shadow(0 0.9cqw 1cqw rgba(0, 0, 0, 0.32));
+  pointer-events: none;
+}
+.vael-seal svg { display: block; width: 100%; height: 100%; }
+.vael-seal__glint {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.85) 50%, transparent 64%);
+  mix-blend-mode: soft-light;
+  transform: translateX(-120%);
+}
+
+/* -------------------------------------------------------------- layouts */
+
+.vael-inv__frame { display: none; position: absolute; z-index: 1; pointer-events: none; }
+
+/* classic: centred, quiet (default rules above) */
+
+/* minimal: everything hangs from one hairline */
+[data-layout="minimal"] .vael-inv__content {
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 3.4cqw;
+  padding: 16cqw 10cqw 11cqw;
+  padding-inline-start: 15cqw;
+  text-align: start;
+}
+[data-layout="minimal"] .vael-names { align-items: flex-start; font-size: 13.5cqw; font-weight: 400; letter-spacing: -0.03em; }
+[data-layout="minimal"] .vael-names__and { font-style: normal; color: var(--v-muted); }
+[data-layout="minimal"] .vael-date { font-size: 4.6cqw; }
+[data-layout="minimal"] .vael-rsvp { align-items: flex-start; }
+[data-layout="minimal"] .vael-rsvp__button { border-width: 0 0 1px; padding: 0 0 0.8cqw; }
+[data-layout="minimal"] .vael-line,
+[data-layout="minimal"] .vael-message { max-width: 58cqw; }
+
+/* framed: a double hairline inset */
+[data-layout="framed"] .vael-inv__frame {
+  display: block;
+  inset: 4.6cqw;
+  border: 1px solid var(--v-accent);
+}
+[data-layout="framed"] .vael-inv__frame::after {
+  content: "";
+  position: absolute;
+  inset: 1.3cqw;
+  border: 1px solid color-mix(in srgb, var(--v-accent) 55%, transparent);
+}
+[data-layout="framed"] .vael-seal { top: 9cqw; }
+[data-layout="framed"] .vael-inv__content { padding-top: 29cqw; padding-inline: 12cqw; }
+
+/* arch: the content sits inside a tall window */
+[data-layout="arch"] .vael-inv__frame {
+  display: block;
+  inset: 5cqw;
+  border: 1px solid var(--v-accent);
+  border-radius: 45cqw 45cqw 0 0;
+}
+[data-layout="arch"] .vael-seal { top: 13cqw; }
+[data-layout="arch"] .vael-inv__content { padding-top: 34cqw; padding-inline: 12cqw; }
+
+/* cinematic: composed low, with a soft vignette */
+[data-layout="cinematic"] .vael-inv__frame {
+  display: block;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.32), transparent 34%, transparent 52%, rgba(0, 0, 0, 0.42));
+}
+[data-layout="cinematic"] .vael-seal { top: 8cqw; }
+[data-layout="cinematic"] .vael-inv__content { justify-content: flex-end; padding-bottom: 13cqw; }
+[data-layout="cinematic"] .vael-names { font-size: 13.5cqw; }
+
+/* --------------------------------------------------------- light + veil */
+
+.vael-inv__sweep {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100%);
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    105deg,
+    transparent 32%,
+    rgba(255, 247, 226, 0.2) 46%,
+    rgba(255, 255, 255, 0.32) 50%,
+    rgba(255, 247, 226, 0.13) 55%,
+    transparent 68%
+  );
+}
+
+.vael-inv__curtain {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 6;
+  width: 50.6%;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 22%, transparent 78%, rgba(0, 0, 0, 0.45)),
+    repeating-linear-gradient(90deg, #3c0b1c 0, #6b1a2f 3.1cqw, #2c0914 6.2cqw),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0, transparent 5cqw, rgba(0, 0, 0, 0.22) 9cqw);
+  box-shadow: inset 0 0 8cqw rgba(0, 0, 0, 0.55);
+}
+.vael-inv__curtain--start { inset-inline-start: 0; }
+.vael-inv__curtain--end { inset-inline-end: 0; }
+
+/* --------------------------------------------------------------- motion
+   Only the material, light and surrounding layers move.
+   Text moves by a few pixels and fades. It never scales, blurs or warps.   */
+
+.vael-inv { --v-lead: 0.9s; --v-settle: 1.2s; }
+.vael-inv[data-motion="quiet-fade"] { --v-lead: 0.5s; --v-settle: 1.9s; }
+.vael-inv[data-motion="ink-fade"] { --v-lead: 0.9s; --v-settle: 1.5s; }
+.vael-inv[data-motion="curtain-open"] { --v-lead: 1.9s; }
+
+.vael-inv.is-reset .vael-inv__content,
+.vael-inv.is-reset .vael-seal { visibility: hidden; }
+
+.vael-inv.is-playing .vael-inv__material { animation: vael-push 3.4s cubic-bezier(0.22, 0.6, 0.2, 1) both; }
+
+.vael-inv.is-playing .vael-blk {
+  animation: vael-settle var(--v-settle) cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--v-lead) + var(--i, 0) * 0.11s);
+}
+.vael-inv.is-playing .vael-seal {
+  animation: vael-seal-in 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--v-lead) - 0.2s);
+}
+.vael-inv.is-playing .vael-seal__glint {
+  animation: vael-glint 1.7s ease-in-out both;
+  animation-delay: calc(var(--v-lead) + 0.9s);
+}
+.vael-inv.is-playing .vael-inv__sweep {
+  animation: vael-sweep 3s cubic-bezier(0.4, 0.1, 0.2, 1) both;
+  animation-delay: calc(var(--v-lead) + 0.2s);
+}
+.vael-inv[data-motion="quiet-fade"].is-playing .vael-inv__sweep,
+.vael-inv[data-motion="ink-fade"].is-playing .vael-inv__sweep { display: none; }
+
+.vael-inv.is-playing .vael-inv__curtain { display: block; }
+.vael-inv.is-playing .vael-inv__curtain--start { animation: vael-curtain-start 2.7s cubic-bezier(0.65, 0, 0.25, 1) 0.35s both; }
+.vael-inv.is-playing .vael-inv__curtain--end { animation: vael-curtain-end 2.7s cubic-bezier(0.65, 0, 0.25, 1) 0.35s both; }
+
+.vael-inv[data-motion="geometry-draw"].is-playing .vael-inv__layer--b { animation: vael-lattice-in 2.6s ease both; }
+.vael-inv[data-motion="ink-fade"].is-playing .vael-inv__layer--a { animation: vael-ink-down 2.2s cubic-bezier(0.3, 0.1, 0.2, 1) both; }
+.vael-inv[data-motion="pearl-glow"].is-playing .vael-inv__layer--b { animation: vael-glow 2.8s ease both; }
+.vael-inv[data-motion="moon-rise"].is-playing .vael-inv__layer--b { animation: vael-rise 2.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.vael-inv[data-motion="botanical-shadow"].is-playing .vael-inv__layer--b {
+  animation: vael-leaf-in 3s ease both, vael-drift 22s ease-in-out 3s infinite alternate;
+}
+.vael-inv[data-motion="star-drift"].is-playing .vael-inv__layer--b {
+  animation: vael-stars-in 3s ease both, vael-twinkle 7s ease-in-out 3s infinite alternate;
+}
+.vael-inv[data-motion="liquid-reveal"].is-playing .vael-inv__layer--b {
+  animation: vael-tide-in 2.8s cubic-bezier(0.3, 0.1, 0.2, 1) both, vael-wave-drift 16s ease-in-out 2.8s infinite alternate;
+}
+
+@keyframes vael-material-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vael-push { from { transform: scale(1.07); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
+@keyframes vael-settle { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+@keyframes vael-seal-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
+@keyframes vael-glint {
+  0% { opacity: 0; transform: translateX(-120%); }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(120%); }
+}
+@keyframes vael-sweep {
+  0% { opacity: 0; transform: translateX(-100%); }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+@keyframes vael-curtain-start { from { transform: none; } to { transform: translateX(calc(var(--dirx) * -101%)); } }
+@keyframes vael-curtain-end { from { transform: none; } to { transform: translateX(calc(var(--dirx) * 101%)); } }
+@keyframes vael-lattice-in { from { opacity: 0; transform: scale(1.06); } to { opacity: 0.4; transform: none; } }
+@keyframes vael-ink-down { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes vael-glow { from { opacity: 0; } to { opacity: 0.9; } }
+@keyframes vael-rise { from { opacity: 0; transform: translateY(6cqw); } to { opacity: 0.85; transform: none; } }
+@keyframes vael-leaf-in { from { opacity: 0; transform: translate(-2.5cqw, -2.5cqw); } to { opacity: 0.3; transform: none; } }
+@keyframes vael-drift { from { transform: translate(0, 0); } to { transform: translate(1.8cqw, 1.4cqw); } }
+@keyframes vael-stars-in { from { opacity: 0; } to { opacity: 0.9; } }
+@keyframes vael-twinkle { from { opacity: 0.72; } to { opacity: 1; } }
+@keyframes vael-tide-in { from { clip-path: circle(0% at 50% 100%); } to { clip-path: circle(150% at 50% 100%); } }
+@keyframes vael-wave-drift { from { transform: translateX(-2.5cqw); } to { transform: translateX(2.5cqw); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .vael-inv,
+  .vael-inv *,
+  .vael-inv *::before,
+  .vael-inv *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .vael-inv .vael-inv__curtain { display: none !important; }
+}
