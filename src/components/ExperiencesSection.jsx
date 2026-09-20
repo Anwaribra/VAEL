@@ -13,7 +13,7 @@ export default function ExperiencesSection() {
       description: isAr
         ? 'دعوة زفاف خاصة تكشف بتأثير سينمائي، مع تأكيد حضور الضيوف، خرائط الموقع، وختم فضي أنيق.'
         : 'A private wedding invitation with a cinematic reveal, guest RSVP, venue directions, and a restrained silver seal.',
-      previewImage: '/docs/screens/landing_experiences_cinematic_desktop.png',
+      previewImage: '/assets/vael_exp_wedding.png',
       link: '/i/oox6nqb7jj',
       targetBlank: false,
     },
@@ -24,7 +24,7 @@ export default function ExperiencesSection() {
       description: isAr
         ? 'بوابة هدايا حميمية تضم صوراً خاصة، رسائل صوتية، ومدخلاً محمياً برمز سري.'
         : 'An intimate gift portal with private photographs, voice notes, and a passcode-protected entrance.',
-      previewImage: '/docs/screens/gifts_cinematic_desktop.png',
+      previewImage: '/assets/vael_exp_celebration.png',
       link: '/gifts',
       targetBlank: false,
     },
@@ -35,7 +35,7 @@ export default function ExperiencesSection() {
       description: isAr
         ? 'دعوة خطوبة تكشف بتأثير خاص، مع اتجاهات الوصول للموقع وتجربة مدروسة للضيوف.'
         : 'An engagement invitation with a private reveal, venue directions, and a considered guest experience.',
-      previewImage: '/docs/screens/invitation_design_desktop.png',
+      previewImage: '/assets/vael_exp_engagement.png',
       link: '/i/oox6nqb7jj',
       targetBlank: false,
     },
@@ -104,28 +104,41 @@ export default function ExperiencesSection() {
 
               </div>
 
-              {/* Floating Neutral Viewport Media */}
+              {/* Floating Editorial Viewport Media */}
               <div className={`lg:col-span-7 ${idx % 2 === 1 ? 'lg:order-1' : 'lg:order-2'}`}>
                 <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden group shadow-2xl p-6 sm:p-8 flex flex-col justify-between select-none">
                   
-                  {/* Fine Ambient Grid Background */}
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_30%,_rgba(8,8,8,0.85)_100%)] pointer-events-none" />
+                  {/* High-End Editorial Photograph Background with 80% Blur */}
+                  <img
+                    src={exp.previewImage}
+                    alt={exp.title}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover opacity-60 blur-[10px] sm:blur-[12px] scale-105 transition-all duration-700 group-hover:scale-110 group-hover:opacity-75"
+                  />
 
-                  {/* Top Bar */}
-                  <div className="relative z-10 flex items-center justify-between text-xs font-sans font-light text-[#8E8E89] tracking-[0.2em] uppercase">
-                    <span>{exp.id}</span>
-                    <span>VAEL ATELIER</span>
+                  {/* Dark Backdrop Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/50 pointer-events-none" />
+
+                  {/* Centered Sleek Lock Overlay */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 pointer-events-none z-20">
+                    <div className="w-11 h-11 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-[#F1EEE7] shadow-xl group-hover:border-white/40 transition-colors">
+                      <svg className="w-4 h-4 text-[#F1EEE7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                    <span className="text-[10px] font-sans font-light tracking-[0.25em] text-[#F1EEE7]/90 uppercase bg-black/60 border border-white/10 px-3.5 py-1 rounded-full backdrop-blur-md shadow-md">
+                      {isAr ? 'معاينة مغلقة • خـاص' : 'PRIVATE ARCHIVE'}
+                    </span>
                   </div>
 
-                  {/* Center Clean Watermark */}
-                  <div className="relative z-10 text-center my-auto">
-                    <div className="font-serif italic text-4xl sm:text-6xl text-white/[0.05] font-light select-none tracking-widest uppercase">
-                      VAEL
-                    </div>
+                  {/* Top Bar */}
+                  <div className="relative z-10 flex items-center justify-between text-xs font-sans font-light text-[#F1EEE7]/90 tracking-[0.2em] uppercase">
+                    <span className="drop-shadow-sm">{exp.id}</span>
+                    <span className="drop-shadow-sm">VAEL ATELIER</span>
                   </div>
 
                   {/* Bottom Bar */}
-                  <div className="relative z-10 flex items-center justify-between text-[11px] font-sans font-light text-[#8E8E89]/60 tracking-[0.18em] uppercase border-t border-white/[0.06] pt-4">
+                  <div className="relative z-10 flex items-center justify-between text-[11px] font-sans font-light text-[#F1EEE7]/80 tracking-[0.18em] uppercase border-t border-white/10 pt-4 drop-shadow-sm">
                     <span>{exp.category}</span>
                     <span>2026</span>
                   </div>

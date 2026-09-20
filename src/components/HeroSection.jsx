@@ -13,6 +13,7 @@ export default function HeroSection({ onWaitlistSubmit }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -48,7 +49,7 @@ export default function HeroSection({ onWaitlistSubmit }) {
     // Keep isSubmitted state so returning to modal shows confirmation if previously submitted
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const emailTrimmed = email.trim();
     
@@ -64,7 +65,26 @@ export default function HeroSection({ onWaitlistSubmit }) {
     }
 
     setEmailError('');
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+
+    // Send email notification to anwarmousa100@gmail.com via FormSubmit AJAX API
+    try {
+      await fetch('https://formsubmit.co/ajax/anwarmousa100@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: 'VAEL Studio — New Waitlist Signup',
+          email: emailTrimmed,
+          submittedAt: new Date().toISOString(),
+          message: `A new user joined the VAEL early waitlist:\n\nEmail: ${emailTrimmed}\nTimestamp: ${new Date().toLocaleString()}`,
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to dispatch notification email:', err);
+    }
 
     // Persist cleanly to localStorage
     try {
@@ -76,6 +96,9 @@ export default function HeroSection({ onWaitlistSubmit }) {
     } catch {
       // Quiet fallback if localStorage is restricted
     }
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
 
     // Invoke optional prop callback
     onWaitlistSubmit?.(emailTrimmed);
@@ -310,10 +333,17 @@ export default function HeroSection({ onWaitlistSubmit }) {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full py-4 rounded-full bg-[#F1EEE7] hover:bg-white text-[#080808] font-medium text-xs tracking-[0.2em] uppercase transition-colors duration-300 flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="w-full py-4 rounded-full bg-[#F1EEE7] hover:bg-white disabled:opacity-50 text-[#080808] font-medium text-xs tracking-[0.2em] uppercase transition-colors duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
                     >
-                      <span>{isAr ? 'انضم إلى قائمة الانتظار' : 'Join the waitlist'}</span>
-                      <span>→</span>
+                      {isSubmitting ? (
+                        <span>{isAr ? 'جاري الإرسال...' : 'Submitting...'}</span>
+                      ) : (
+                        <>
+                          <span>{isAr ? 'انضم إلى قائمة الانتظار' : 'Join the waitlist'}</span>
+                          <span>→</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </form>

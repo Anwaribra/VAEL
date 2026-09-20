@@ -24,6 +24,8 @@ export default function CustomRequestPage() {
 
   const [copiedMessage, setCopiedMessage] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Occasions list
   const OCCASIONS = [
@@ -111,7 +113,7 @@ export default function CustomRequestPage() {
     return lines.join('\n');
   };
 
-  const handleSendEmail = (e) => {
+  const handleSendEmail = async (e) => {
     e.preventDefault();
     setValidationError('');
 
@@ -120,11 +122,38 @@ export default function CustomRequestPage() {
       return;
     }
 
+    setIsSubmitting(true);
     const messageBody = buildFormattedMessage();
-    const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(
-      'VAEL — Bespoke Commission Inquiry'
-    )}&body=${encodeURIComponent(messageBody)}`;
-    window.location.href = mailtoUrl;
+
+    try {
+      await fetch('https://formsubmit.co/ajax/anwarmousa100@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `VAEL Atelier — Bespoke Commission Inquiry from ${name.trim() || contactInfo.trim()}`,
+          clientName: name.trim() || 'Not specified',
+          contactInfo: contactInfo.trim(),
+          occasion: selectedOccasion,
+          desiredDate: desiredDate.trim() || 'Not specified',
+          selectedFeatures: selectedFeatures.join(', '),
+          visionBrief: details.trim() || 'None provided',
+          fullBriefText: messageBody,
+        }),
+      });
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error('Email dispatch error:', err);
+      // Fallback to native mailto if network blocked
+      const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(
+        'VAEL — Bespoke Commission Inquiry'
+      )}&body=${encodeURIComponent(messageBody)}`;
+      window.location.href = mailtoUrl;
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCopyMessage = () => {
@@ -314,13 +343,34 @@ export default function CustomRequestPage() {
             </p>
           )}
 
+          {isSubmitted && (
+            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/20 text-center space-y-2">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mx-auto text-[#F1EEE7]">
+                ✓
+              </div>
+              <h4 className="font-serif italic text-xl font-light text-[#F1EEE7]">
+                {isAr ? 'تم استلام طلب التكليف بنجاح' : 'Commission Brief Received'}
+              </h4>
+              <p className="text-xs text-[#8E8E89] font-light max-w-md mx-auto">
+                {isAr
+                  ? `تم إرسال تفاصيل التكليف مباشرة إلى الاستوديو (${contactEmail}). وسنتواصل معكم قريباً.`
+                  : `Your inquiry has been dispatched to ${contactEmail}. Our team will review your brief shortly.`}
+              </p>
+            </div>
+          )}
+
           {/* ACTION BUTTONS */}
           <div className="pt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
             <button
               type="submit"
-              className="px-8 py-4 rounded-full bg-[#F1EEE7] text-[#080808] font-medium text-xs font-sans tracking-[0.2em] uppercase transition-colors duration-500 hover:bg-white cursor-pointer"
+              disabled={isSubmitting}
+              className="px-8 py-4 rounded-full bg-[#F1EEE7] text-[#080808] disabled:opacity-50 font-medium text-xs font-sans tracking-[0.2em] uppercase transition-colors duration-500 hover:bg-white cursor-pointer disabled:cursor-not-allowed"
             >
-              <span>{isAr ? 'إرسال التكليف عبر البريد' : 'SUBMIT COMMISSION BRIEF'}</span>
+              <span>
+                {isSubmitting
+                  ? (isAr ? 'جاري إرسال التكليف...' : 'SUBMITTING BRIEF...')
+                  : (isAr ? 'إرسال التكليف عبر البريد' : 'SUBMIT COMMISSION BRIEF')}
+              </span>
             </button>
 
             <a
