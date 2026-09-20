@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
-import IdeaSection from './components/IdeaSection';
-import InvitationsSection from './components/InvitationsSection';
-import ShowcaseSection from './components/ShowcaseSection';
-import SignatureMomentSection from './components/SignatureMomentSection';
-import FinalCtaSection from './components/FinalCtaSection';
+import ExperiencesSection from './components/ExperiencesSection';
+import PhilosophySection from './components/PhilosophySection';
+import CapabilitiesSection from './components/CapabilitiesSection';
+import ProcessSection from './components/ProcessSection';
+import InquiryFooterSection from './components/InquiryFooterSection';
 
 // Page Routes
 import CreateInvitationPage from './pages/CreateInvitationPage';
@@ -63,24 +63,18 @@ function LandingPageContent() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#F5F5F7] text-[#0F0F12]">
-      {/* Static Ambient Background Glow */}
-      <div className="fixed inset-0 z-0 pointer-events-none bg-ambient-light-radial" />
-
+    <div className="relative min-h-screen bg-[#080808] text-[#F1EEE7] overflow-x-hidden">
       {/* Liquid Glass Navigation */}
       <Navbar />
 
-      {/* Natural Editorial Section Flow */}
+      {/* Natural Editorial Section Flow: 01 Hero -> 02 Experiences -> 03 Philosophy -> 04 Capabilities -> 05 Process -> 06 Inquiry & Footer */}
       <main className="relative z-10">
         <HeroSection />
-        <IdeaSection />
-        <AnimatedCollectionSection
-          locale={isAr ? 'ar' : 'en'}
-          navigate={navigate}
-        />
-        <ShowcaseSection />
-        <SignatureMomentSection />
-        <FinalCtaSection />
+        <ExperiencesSection />
+        <PhilosophySection />
+        <CapabilitiesSection />
+        <ProcessSection />
+        <InquiryFooterSection />
       </main>
     </div>
   );

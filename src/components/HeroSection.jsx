@@ -1,288 +1,354 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight, Play } from 'lucide-react';
-import * as THREE from 'three';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useLanguage } from '../LanguageContext';
 
-export default function HeroSection() {
+import VaelLogo from './VaelLogo';
+
+export default function HeroSection({ onWaitlistSubmit }) {
   const { isAr } = useLanguage();
-  const textControls = useAnimation();
-  const buttonControls = useAnimation();
   const heroRef = useRef(null);
+  const triggerRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   });
 
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.95], [1, 0.7]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.8]);
+
+  // Keyboard Escape & Focus restoration
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
 
   useEffect(() => {
-    textControls.start((i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.08 + 0.3,
-        duration: 1.1,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    }));
-    buttonControls.start({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 1.2, duration: 0.8 },
-    });
-  }, [textControls, buttonControls]);
+    if (isModalOpen) {
+      setTimeout(() => inputRef.current?.focus(), 50);
+    } else {
+      triggerRef.current?.focus();
+    }
+  }, [isModalOpen]);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEmailError('');
+    // Keep isSubmitted state so returning to modal shows confirmation if previously submitted
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const emailTrimmed = email.trim();
+    
+    // Basic RFC 5322 regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailTrimmed || !emailRegex.test(emailTrimmed)) {
+      setEmailError(
+        isAr
+          ? 'يرجى إدخال عنوان بريد إلكتروني صحيح.'
+          : 'Please enter a valid email address.'
+      );
+      return;
+    }
+
+    setEmailError('');
+    setIsSubmitted(true);
+
+    // Persist cleanly to localStorage
+    try {
+      const existing = JSON.parse(localStorage.getItem('vael_waitlist_emails') || '[]');
+      if (!existing.includes(emailTrimmed)) {
+        existing.push(emailTrimmed);
+        localStorage.setItem('vael_waitlist_emails', JSON.stringify(existing));
+      }
+    } catch {
+      // Quiet fallback if localStorage is restricted
+    }
+
+    // Invoke optional prop callback
+    onWaitlistSubmit?.(emailTrimmed);
+  };
 
   return (
-    <div ref={heroRef} className="w-full pb-6">
+    <div ref={heroRef} className="w-full">
       <motion.section
         id="hero-section"
         style={{ scale: heroScale, opacity: heroOpacity }}
-        className="relative w-full min-h-[92vh] md:min-h-[96vh] bg-[#050507] text-white overflow-hidden flex flex-col justify-center items-center px-6 sm:px-12 pt-36 sm:pt-44 md:pt-48 pb-28 select-none rounded-b-[3.5rem] md:rounded-b-[4.5rem] shadow-[0_35px_100px_rgba(0,0,0,0.6)] border-b border-white/10"
+        className="relative w-full min-h-[90vh] md:min-h-[95vh] bg-[#080808] text-[#F1EEE7] overflow-hidden flex flex-col justify-between px-6 sm:px-12 md:px-16 pt-36 sm:pt-44 md:pt-48 pb-20 md:pb-28 select-none border-b border-white/[0.07]"
       >
-        
-        {/* Three.js Interactive GPU Woven Light Particle Canvas */}
-        <WovenParticleCanvas />
+        {/* Subtle Ambient Vignette */}
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_transparent_50%,_rgba(8,8,8,0.9)_100%)] z-10" />
 
-        {/* Dark Vignette Ambient Radial Glow & Text Dimmer */}
-        <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#050507]/80 via-[#050507]/60 to-[#050507]"></div>
-
-        {/* Central Hero Text Composition */}
-        <div className="relative z-20 max-w-5xl mx-auto w-full text-center space-y-8 sm:space-y-10">
+        {/* Content Container */}
+        <div className="relative z-20 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center flex-1 my-auto">
           
-          {/* Animated Display Headline */}
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[1.1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
-            {isAr ? (
-              <>
-                دعوة مصممة، <br />
-                <em className="font-serif italic font-normal text-white/90">تناسب لحظتكم.</em>
-              </>
-            ) : (
-              <>
-                An invitation, <br />
-                <em className="font-serif italic font-normal text-white/90">made personal.</em>
-              </>
-            )}
-          </h1>
+          {/* Left Column: Confident Editorial Typography */}
+          <div className="lg:col-span-6 space-y-8 text-center lg:text-start flex flex-col items-center lg:items-start">
+            
+            {/* Studio Badge & Titles */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-5"
+            >
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.07] text-xs font-sans font-light tracking-[0.2em] text-[#A8A8A3] uppercase">
+                <span>{isAr ? 'استوديو رقمي مستقل' : 'INDEPENDENT DIGITAL STUDIO'}</span>
+              </div>
 
-          {/* Subtitle - Clean Editorial Paragraph */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="max-w-2xl mx-auto text-base sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed px-4 drop-shadow-md"
-          >
-            {isAr
-              ? 'نصمم دعوات رقمية ومواقع مخصصة تناسب لحظتكم الاستثنائية.'
-              : 'Crafting bespoke digital invitations and luxury websites for your meaningful occasions.'}
-          </motion.p>
+              <h1 className="flex justify-center lg:justify-start">
+                <a href="/" className="inline-block hover:opacity-90 transition-opacity">
+                  <VaelLogo className="h-16 sm:h-24 md:h-28 w-auto text-[#F1EEE7]" />
+                </a>
+              </h1>
 
-          {/* Action Buttons - Pure Editorial Hierarchy */}
+              <div className="font-display text-3xl sm:text-5xl md:text-6xl font-light text-[#F1EEE7] tracking-tight leading-[1.08]">
+                {isAr ? (
+                  <>
+                    دعوات رقمية <br />
+                    <span className="font-serif italic text-[#A8A8A3]">مصممة شخصياً.</span>
+                  </>
+                ) : (
+                  <>
+                    Digital invitations <br />
+                    <span className="font-serif italic text-[#A8A8A3]">made personal.</span>
+                  </>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Supporting Line */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-xl text-sm sm:text-base text-[#8E8E89] font-light leading-relaxed tracking-wide"
+            >
+              {isAr
+                ? 'تجارب رقمية خاصة وموجهة فنوياً لحفلات الزفاف والخطوبة والمناسبات المميزة.'
+                : 'Private, art-directed digital experiences for weddings, engagements, and meaningful celebrations.'}
+            </motion.p>
+
+            {/* Dual CTAs: Primary & Secondary */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-5"
+            >
+              <a
+                href="/custom"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.pushState({}, '', '/custom');
+                  window.dispatchEvent(new Event('popstate'));
+                }}
+                className="group inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-[#F1EEE7] text-[#080808] font-medium text-xs tracking-[0.2em] uppercase transition-colors duration-500 hover:bg-white shadow-lg"
+              >
+                <span>{isAr ? 'ابدأ تصميمك الخاص' : 'Start a commission'}</span>
+                <span className="transition-transform duration-500 group-hover:translate-x-1.5">→</span>
+              </a>
+
+              <a
+                href="#experiences"
+                className="inline-flex items-center gap-2 text-xs font-sans font-light tracking-[0.2em] text-[#A8A8A3] hover:text-[#F1EEE7] uppercase py-2 transition-colors duration-500 border-b border-transparent hover:border-white/20"
+              >
+                <span>{isAr ? 'شاهد الأعمال المختارة' : 'View selected work'}</span>
+              </a>
+            </motion.div>
+
+          </div>
+
+          {/* Right Column: High-End Editorial Invitation Photograph Viewport */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 pt-4"
+            transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 flex justify-center lg:justify-end"
           >
-            {/* Primary Solid Pill Button */}
-            <a
-              href={`https://wa.me/201144162459?text=${encodeURIComponent(isAr ? 'مرحباً، حابب أستفسر عن تصميم موقع خاص/دعوة مخصصة' : 'Hello, I would like to order a custom website / bespoke invitation')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3.5 rounded-full bg-[#F5F5F7] text-[#08080A] font-medium text-sm sm:text-base hover:bg-white transition-all duration-300 shadow-xl hover:scale-105"
-            >
-              <span>{isAr ? 'تواصل معنا لطلب موقعك' : 'Inquire Bespoke Website'}</span>
-            </a>
+            <div className="relative w-full max-w-[420px] sm:max-w-[460px] aspect-[4/5] rounded-2xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden flex flex-col justify-between p-8 sm:p-10 select-none shadow-2xl group">
+              
+              {/* High-End Editorial Photograph Background */}
+              <img
+                src="/assets/vael_hero_invitation.png"
+                alt="VAEL Art-Directed Blank Invitation Still Life"
+                className="absolute inset-0 w-full h-full object-cover opacity-90 transition-scale duration-700 group-hover:scale-[1.02]"
+              />
 
-            <a
-              href="#showcase"
-              className="text-zinc-300 hover:text-white font-medium text-sm sm:text-base underline underline-offset-8 decoration-zinc-500 hover:decoration-white transition-colors flex items-center gap-1.5"
-            >
-              <span>{isAr ? 'شاهد أعمالنا الحية' : 'Explore Live Showcase'}</span>
-              <ArrowUpRight className="w-4 h-4 opacity-70" />
-            </a>
+              {/* Quiet Ambient Gradient Overlays for Readability & Depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 pointer-events-none" />
+
+              {/* Top Meta */}
+              <div className="relative z-10 flex items-center justify-between text-xs font-sans font-light text-[#F1EEE7]/90 tracking-[0.2em] uppercase">
+                <span className="drop-shadow-sm">VAEL STUDIO</span>
+                <span className="drop-shadow-sm">2026</span>
+              </div>
+
+              {/* Center Announcement Content */}
+              <div className="relative z-10 space-y-5 text-center my-auto pt-16">
+                
+                <div className="space-y-2">
+                  <span className="text-xs font-sans font-light uppercase tracking-[0.25em] text-[#F1EEE7]/80 drop-shadow-sm">
+                    {isAr ? 'الإصدار الأول' : 'THE FIRST EDITION'}
+                  </span>
+                  <h3 className="font-serif italic text-xl sm:text-2xl font-light text-[#F1EEE7] tracking-tight leading-snug drop-shadow-md max-w-xs mx-auto">
+                    {isAr
+                      ? 'انضموا إلى قائمة الانتظار للحصول على دعوة رقمية مجانية عند الإطلاق.'
+                      : 'Join the early list for a complimentary digital invitation from VAEL at launch.'}
+                  </h3>
+                </div>
+
+                <div className="pt-1">
+                  <button
+                    ref={triggerRef}
+                    onClick={() => setIsModalOpen(true)}
+                    className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 hover:border-white/40 text-[#F1EEE7] text-xs font-sans font-light tracking-[0.2em] uppercase transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-white/40 shadow-xl"
+                  >
+                    <span>{isAr ? 'انضم إلى قائمة الانتظار' : 'Join the waitlist'}</span>
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </button>
+                </div>
+
+              </div>
+
+              {/* Bottom Metadata */}
+              <div className="relative z-10 flex items-center justify-between text-[11px] font-sans font-light text-[#F1EEE7]/70 tracking-[0.2em] uppercase border-t border-white/10 pt-4 drop-shadow-sm">
+                <span>{isAr ? 'إصدارات خاصة' : 'PRE-LAUNCH EDITION'}</span>
+                <span>VAEL</span>
+              </div>
+
+            </div>
           </motion.div>
+
         </div>
 
       </motion.section>
+
+      {/* Quiet Accessible Waitlist Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 select-none">
+            
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeModal}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+
+            {/* Modal Dialog Card */}
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="waitlist-title"
+              aria-describedby="waitlist-desc"
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10 w-full max-w-md bg-[#0e0e12] border border-white/10 rounded-2xl p-8 sm:p-10 text-[#F1EEE7] shadow-2xl space-y-7"
+            >
+              {/* Close Button */}
+              <button
+                onClick={closeModal}
+                aria-label={isAr ? 'إغلاق' : 'Close'}
+                className="absolute top-6 right-6 text-[#A8A8A3] hover:text-[#F1EEE7] transition-colors focus:outline-none"
+              >
+                ✕
+              </button>
+
+              {!isSubmitted ? (
+                <form onSubmit={handleFormSubmit} className="space-y-6">
+                  <div className="space-y-2">
+                    <h3 id="waitlist-title" className="font-serif italic text-2xl sm:text-3xl font-light text-[#F1EEE7]">
+                      {isAr ? 'الانضمام للقائمة الأولى' : 'Join the early list'}
+                    </h3>
+                    <p id="waitlist-desc" className="text-xs sm:text-sm text-[#8E8E89] font-light leading-relaxed">
+                      {isAr
+                        ? 'اتركوا بريدكم الإلكتروني وسنخبركم عندما تتوفر أولى دعوات VAEL.'
+                        : 'Leave your email and we’ll let you know when VAEL’s first invitations are ready.'}
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="waitlist-email" className="block text-xs font-sans font-light tracking-[0.18em] uppercase text-[#A8A8A3]">
+                      {isAr ? 'البريد الإلكتروني' : 'Email address'}
+                    </label>
+                    <input
+                      ref={inputRef}
+                      id="waitlist-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (emailError) setEmailError('');
+                      }}
+                      placeholder="name@example.com"
+                      className="w-full px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-[#F1EEE7] placeholder-[#8E8E89]/50 text-sm font-sans focus:outline-none focus:border-white/40 transition-colors"
+                    />
+                    {emailError && (
+                      <p className="text-xs text-rose-400 font-sans tracking-wide pt-1">
+                        {emailError}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      className="w-full py-4 rounded-full bg-[#F1EEE7] hover:bg-white text-[#080808] font-medium text-xs tracking-[0.2em] uppercase transition-colors duration-300 flex items-center justify-center gap-2"
+                    >
+                      <span>{isAr ? 'انضم إلى قائمة الانتظار' : 'Join the waitlist'}</span>
+                      <span>→</span>
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                /* Success State */
+                <div className="text-center py-4 space-y-4">
+                  <div className="w-12 h-12 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center mx-auto text-[#F1EEE7]">
+                    ✓
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="font-serif italic text-2xl sm:text-3xl font-light text-[#F1EEE7]">
+                      {isAr ? 'تمت إضافتكم للقائمة.' : 'You’re on the list.'}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#8E8E89] font-light leading-relaxed max-w-xs mx-auto">
+                      {isAr
+                        ? 'سنقوم بإعلامكم فور جاهزية الدعوات الأولى.'
+                        : 'We’ll let you know when the first invitations are ready.'}
+                    </p>
+                  </div>
+                  <div className="pt-4">
+                    <button
+                      onClick={closeModal}
+                      className="px-6 py-2.5 rounded-full bg-white/[0.04] hover:bg-white/10 border border-white/10 text-xs font-sans font-light tracking-[0.2em] text-[#F1EEE7] uppercase transition-colors"
+                    >
+                      {isAr ? 'إغلاق' : 'Close'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
-}
-
-// --- Three.js Interactive GPU Particle Canvas Component ---
-function WovenParticleCanvas() {
-  const mountRef = useRef(null);
-
-  useEffect(() => {
-    const mount = mountRef.current;
-    if (!mount) return;
-
-    const width = mount.clientWidth || window.innerWidth;
-    const height = mount.clientHeight || window.innerHeight;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      width / height,
-      0.1,
-      1000
-    );
-    camera.position.z = 4.5;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    mount.appendChild(renderer.domElement);
-
-    const mouse = new THREE.Vector2(0, 0);
-    const clock = new THREE.Clock();
-
-    // 40,000 Woven Light Particles
-    const particleCount = 40000;
-    const positions = new Float32Array(particleCount * 3);
-    const originalPositions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
-
-    const geometry = new THREE.BufferGeometry();
-    const torusKnot = new THREE.TorusKnotGeometry(1.6, 0.55, 180, 30);
-
-    for (let i = 0; i < particleCount; i++) {
-      const vertexIndex = i % torusKnot.attributes.position.count;
-      const x = torusKnot.attributes.position.getX(vertexIndex);
-      const y = torusKnot.attributes.position.getY(vertexIndex);
-      const z = torusKnot.attributes.position.getZ(vertexIndex);
-
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
-      originalPositions[i * 3] = x;
-      originalPositions[i * 3 + 1] = y;
-      originalPositions[i * 3 + 2] = z;
-
-      // Pure Silver & Diamond Ice Light HSL Palette
-      const color = new THREE.Color();
-      const lightness = 0.65 + Math.random() * 0.35;
-      color.setHSL(0.0, 0.0, lightness);
-
-      colors[i * 3] = color.r;
-      colors[i * 3 + 1] = color.g;
-      colors[i * 3 + 2] = color.b;
-
-      velocities[i * 3] = 0;
-      velocities[i * 3 + 1] = 0;
-      velocities[i * 3 + 2] = 0;
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 0.015,
-      vertexColors: true,
-      blending: THREE.AdditiveBlending,
-      transparent: true,
-      opacity: 0.45,
-    });
-
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
-
-    const handleMouseMove = (event) => {
-      const rect = mount.getBoundingClientRect();
-      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-
-    let frameId = 0;
-    const animate = () => {
-      frameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
-
-      const mouseWorld = new THREE.Vector3(mouse.x * 3.5, mouse.y * 3.5, 0);
-
-      for (let i = 0; i < particleCount; i++) {
-        const ix = i * 3;
-        const iy = i * 3 + 1;
-        const iz = i * 3 + 2;
-
-        const currentPos = new THREE.Vector3(
-          positions[ix],
-          positions[iy],
-          positions[iz]
-        );
-        const originalPos = new THREE.Vector3(
-          originalPositions[ix],
-          originalPositions[iy],
-          originalPositions[iz]
-        );
-        const velocity = new THREE.Vector3(
-          velocities[ix],
-          velocities[iy],
-          velocities[iz]
-        );
-
-        const dist = currentPos.distanceTo(mouseWorld);
-        if (dist < 1.6) {
-          const force = (1.6 - dist) * 0.012;
-          const direction = new THREE.Vector3()
-            .subVectors(currentPos, mouseWorld)
-            .normalize();
-          velocity.add(direction.multiplyScalar(force));
-        }
-
-        // Return to original position spring force
-        const returnForce = new THREE.Vector3()
-          .subVectors(originalPos, currentPos)
-          .multiplyScalar(0.0012);
-        velocity.add(returnForce);
-
-        // Damping
-        velocity.multiplyScalar(0.94);
-
-        positions[ix] += velocity.x;
-        positions[iy] += velocity.y;
-        positions[iz] += velocity.z;
-
-        velocities[ix] = velocity.x;
-        velocities[iy] = velocity.y;
-        velocities[iz] = velocity.z;
-      }
-      geometry.attributes.position.needsUpdate = true;
-
-      points.rotation.y = elapsedTime * 0.08;
-      points.rotation.x = Math.sin(elapsedTime * 0.04) * 0.15;
-
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    const handleResize = () => {
-      if (!mount) return;
-      const w = mount.clientWidth;
-      const h = mount.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      torusKnot.dispose();
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (renderer.domElement.parentNode === mount) {
-        mount.removeChild(renderer.domElement);
-      }
-    };
-  }, []);
-
-  return <div ref={mountRef} className="absolute inset-0 z-0 overflow-hidden rounded-b-[3.5rem] md:rounded-b-[4.5rem]" />;
 }
