@@ -30,7 +30,7 @@ export default function CapabilitiesSection() {
   ];
 
   return (
-    <section id="capabilities" className="w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] border-b border-white/[0.07] select-none">
+    <section id="capabilities" className="w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] border-b border-white/[0.07]">
       <div className="max-w-7xl mx-auto space-y-20">
         
         {/* Section Header */}

@@ -38,6 +38,26 @@
     font-family: var(--font-sans);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /* High-Contrast Luxury Text Selection */
+  ::selection {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+  ::-moz-selection {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+  }
+
+  /* Prevent text selection and dragging on images & videos */
+  img, video, canvas {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
   }
 
   [dir="rtl"] {

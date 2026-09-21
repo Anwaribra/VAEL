@@ -77,7 +77,7 @@ export default function InvitationsSection() {
   return (
     <section
       id="collection"
-      className="relative w-full py-24 sm:py-32 px-4 sm:px-8 bg-[#F5F5F7] text-[#0F0F12] border-b border-black/10 select-none overflow-hidden"
+      className="relative w-full py-24 sm:py-32 px-4 sm:px-8 bg-[#F5F5F7] text-[#0F0F12] border-b border-black/10 overflow-hidden"
     >
       {/* Anchor duplicate for backwards compatibility */}
       <div id="invitations-section" className="absolute top-0 left-0" />

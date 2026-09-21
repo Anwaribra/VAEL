@@ -158,7 +158,7 @@ export default function SignatureMomentSection() {
         <div className="relative w-full h-[480px] rounded-[2.5rem] bg-white/90 border border-black/15 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.06)] flex items-center justify-center cursor-crosshair">
           
           {/* Background Typography Revealed by Lens */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none px-8 text-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-8 text-center">
             <span className="text-xs font-mono uppercase tracking-[0.4em] text-[#71717A] mb-2 font-medium">
               {isAr ? 'إصدار VAEL الخاص' : 'VAEL Signature Edition'}
             </span>

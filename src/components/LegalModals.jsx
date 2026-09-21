@@ -21,7 +21,7 @@ export default function LegalModals({ activeTab, onClose, setActiveTab }) {
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.95, y: 20 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-3xl rounded-[2.5rem] bg-[#0A0A0E] text-white border border-white/20 p-6 sm:p-10 md:p-12 shadow-[0_35px_100px_rgba(0,0,0,0.8)] my-8 select-none"
+          className="relative w-full max-w-3xl rounded-[2.5rem] bg-[#0A0A0E] text-white border border-white/20 p-6 sm:p-10 md:p-12 shadow-[0_35px_100px_rgba(0,0,0,0.8)] my-8"
         >
           {/* Close Button */}
           <button

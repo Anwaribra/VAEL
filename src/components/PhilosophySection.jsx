@@ -42,7 +42,7 @@ export default function PhilosophySection() {
   const activeDirection = directions[activeDirectionIndex];
 
   return (
-    <section id="philosophy" className="relative w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] border-b border-white/[0.07] select-none">
+    <section id="philosophy" className="relative w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] border-b border-white/[0.07]">
       <div className="max-w-7xl mx-auto space-y-24">
         
         {/* Section Index Header */}
@@ -132,7 +132,7 @@ export default function PhilosophySection() {
 
           {/* Editorial Photograph Preview Thumbnail */}
           <div className="lg:col-span-5 flex flex-col items-start lg:items-end">
-            <div className="relative w-full max-w-[380px] aspect-[4/3] rounded-xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden p-6 flex flex-col justify-between select-none shadow-xl group">
+            <div className="relative w-full max-w-[380px] aspect-[4/3] rounded-xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden p-6 flex flex-col justify-between shadow-xl group">
               
               {/* High-End Editorial Direction Photograph with 80% Blur */}
               <AnimatePresence mode="wait">

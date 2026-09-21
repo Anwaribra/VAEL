@@ -40,7 +40,7 @@ export default function IdeaSection() {
   ];
 
   return (
-    <section id="craftsmanship" className="relative py-24 px-6 md:px-12 bg-transparent overflow-hidden select-none">
+    <section id="craftsmanship" className="relative py-24 px-6 md:px-12 bg-transparent overflow-hidden">
       
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white rounded-full blur-3xl pointer-events-none opacity-50" />

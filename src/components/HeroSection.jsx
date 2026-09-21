@@ -109,7 +109,7 @@ export default function HeroSection({ onWaitlistSubmit }) {
       <motion.section
         id="hero-section"
         style={{ scale: heroScale, opacity: heroOpacity }}
-        className="relative w-full min-h-[90vh] md:min-h-[95vh] bg-[#080808] text-[#F1EEE7] overflow-hidden flex flex-col justify-between px-6 sm:px-12 md:px-16 pt-36 sm:pt-44 md:pt-48 pb-20 md:pb-28 select-none border-b border-white/[0.07]"
+        className="relative w-full min-h-[90vh] md:min-h-[95vh] bg-[#080808] text-[#F1EEE7] overflow-hidden flex flex-col justify-between px-6 sm:px-12 md:px-16 pt-36 sm:pt-44 md:pt-48 pb-20 md:pb-28 border-b border-white/[0.07]"
       >
         {/* Subtle Ambient Vignette */}
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_transparent_50%,_rgba(8,8,8,0.9)_100%)] z-10" />
@@ -201,7 +201,7 @@ export default function HeroSection({ onWaitlistSubmit }) {
             transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 flex justify-center lg:justify-end"
           >
-            <div className="relative w-full max-w-[420px] sm:max-w-[460px] aspect-[4/5] rounded-2xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden flex flex-col justify-between p-8 sm:p-10 select-none shadow-2xl group">
+            <div className="relative w-full max-w-[420px] sm:max-w-[460px] aspect-[4/5] rounded-2xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden flex flex-col justify-between p-8 sm:p-10 shadow-2xl group">
               
               {/* High-End Editorial Photograph Background */}
               <img
@@ -262,7 +262,7 @@ export default function HeroSection({ onWaitlistSubmit }) {
       {/* Quiet Accessible Waitlist Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 select-none">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
             
             {/* Backdrop */}
             <motion.div

@@ -171,7 +171,7 @@ export default function InvitationGuestPage({ slug }) {
   const blocks = cfg.blocks;
 
   return (
-    <div className="min-h-screen bg-[#050507] text-white flex flex-col justify-center items-center py-12 px-4 selection:bg-amber-500/20">
+    <div className="min-h-screen bg-[#050507] text-white flex flex-col justify-center items-center py-12 px-4 selection:bg-white/20 selection:text-white">
       <div className="w-full max-w-[540px]">
         <InvitationRenderer
           template={template}

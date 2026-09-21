@@ -13,7 +13,7 @@ export default function InquiryFooterSection() {
   };
 
   return (
-    <section id="inquiry-footer" className="w-full bg-[#080808] text-[#F1EEE7] select-none">
+    <section id="inquiry-footer" className="w-full bg-[#080808] text-[#F1EEE7]">
       
       {/* 06 — INQUIRY CALL TO ACTION */}
       <div className="py-32 md:py-44 px-6 sm:px-12 md:px-16 border-b border-white/[0.07]">

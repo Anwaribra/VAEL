@@ -16,7 +16,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-[#080808] text-[#F1EEE7] py-20 px-6 sm:px-12 md:px-16 border-t border-white/[0.07] select-none text-xs font-sans font-light">
+    <footer className="w-full bg-[#080808] text-[#F1EEE7] py-20 px-6 sm:px-12 md:px-16 border-t border-white/[0.07] text-xs font-sans font-light">
       <div className="max-w-7xl mx-auto space-y-12">
         
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-white/[0.07] pb-12">
@@ -63,8 +63,18 @@ export default function Footer() {
           <div>
             © 2026 VAEL STUDIO. {isAr ? 'جميع الحقوق محفوظة' : 'ALL RIGHTS RESERVED.'}
           </div>
-          <div>
-            {isAr ? 'متوفر عالمياً • استوديو غرينتش +3' : 'AVAILABLE WORLDWIDE • STUDIO GMT+3'}
+          <div className="inline-flex items-center gap-1.5 text-xs text-[#8E8E89]">
+            <span className="font-sans font-light tracking-normal text-[11px] text-[#8E8E89]">
+              Powered by
+            </span>
+            <a
+              href="https://www.thinkerlab.tech/en"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-sans font-bold text-white tracking-[0.22em] uppercase text-[12px] hover:text-[#38bdf8] hover:drop-shadow-[0_0_10px_rgba(56,189,248,0.5)] transition-all duration-300 cursor-pointer"
+            >
+              THINKER
+            </a>
           </div>
         </div>
 

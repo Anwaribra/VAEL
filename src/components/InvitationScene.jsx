@@ -15,7 +15,7 @@ export default function InvitationScene({
 
   return (
     <div
-      className={`invitationScene relative overflow-hidden isolation-isolate w-full select-none ${className}`}
+      className={`invitationScene relative overflow-hidden isolation-isolate w-full ${className}`}
       style={{
         minHeight: '540px',
         backgroundColor: '#e9e4db',

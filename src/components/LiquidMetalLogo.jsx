@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export default function LiquidMetalLogo() {
   return (
-    <div className="relative flex flex-col items-center justify-center my-6 select-none">
+    <div className="relative flex flex-col items-center justify-center my-6">
       
       {/* Outer Glow Halo */}
       <div className="absolute w-[360px] h-[120px] bg-black/[0.03] rounded-full blur-3xl pointer-events-none"></div>

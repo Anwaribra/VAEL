@@ -170,7 +170,7 @@ export default function CustomRequestPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080808] text-[#F1EEE7] flex flex-col justify-between select-none">
+    <div className="min-h-screen bg-[#080808] text-[#F1EEE7] flex flex-col justify-between">
       <Navbar />
 
       <main className="relative z-10 pt-36 pb-28 px-6 sm:px-12 md:px-16 max-w-4xl mx-auto w-full space-y-16">

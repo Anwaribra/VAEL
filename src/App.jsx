@@ -148,7 +148,7 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      <div className="relative min-h-screen font-sans antialiased selection:bg-amber-500/20 selection:text-amber-300 overflow-x-hidden">
+      <div className="relative min-h-screen font-sans antialiased selection:bg-white/20 selection:text-white overflow-x-hidden">
         {renderRoute()}
       </div>
     </LanguageProvider>

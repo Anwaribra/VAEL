@@ -103,7 +103,7 @@ export default function InvitationEnvelope({
     return (
       <InvitationScene
         background={bgTextureObj}
-        className={`min-h-screen w-full flex flex-col items-center justify-start py-8 px-4 sm:px-8 select-none ${className}`}
+        className={`min-h-screen w-full flex flex-col items-center justify-start py-8 px-4 sm:px-8 ${className}`}
         sceneStyle={{ minHeight: '100vh' }}
         previewClassName="w-full max-w-3xl sm:max-w-4xl"
       >
@@ -150,7 +150,7 @@ export default function InvitationEnvelope({
 
   // UNOPENED ENVELOPE OR COMPACT PREVIEW STAGE
   return (
-    <div className={`relative w-full ${compact ? 'max-w-xl' : 'max-w-2xl'} mx-auto flex flex-col items-center select-none ${className}`}>
+    <div className={`relative w-full ${compact ? 'max-w-xl' : 'max-w-2xl'} mx-auto flex flex-col items-center ${className}`}>
       
       {/* Design morphing plain-text switcher (if enabled) */}
       {showDesignSwitcher && (

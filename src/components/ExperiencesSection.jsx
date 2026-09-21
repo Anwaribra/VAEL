@@ -42,7 +42,7 @@ export default function ExperiencesSection() {
   ];
 
   return (
-    <section id="experiences" className="w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] select-none border-b border-white/[0.07]">
+    <section id="experiences" className="w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] border-b border-white/[0.07]">
       <div className="max-w-7xl mx-auto space-y-28">
         
         {/* Section Header */}
@@ -106,7 +106,7 @@ export default function ExperiencesSection() {
 
               {/* Floating Editorial Viewport Media */}
               <div className={`lg:col-span-7 ${idx % 2 === 1 ? 'lg:order-1' : 'lg:order-2'}`}>
-                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden group shadow-2xl p-6 sm:p-8 flex flex-col justify-between select-none">
+                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl bg-[#0b0b0e] border border-white/[0.08] overflow-hidden group shadow-2xl p-6 sm:p-8 flex flex-col justify-between">
                   
                   {/* High-End Editorial Photograph Background with 80% Blur */}
                   <img
