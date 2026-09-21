@@ -45,50 +45,35 @@ export default function PhilosophySection() {
     <section id="philosophy" className="relative w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] border-b border-white/[0.07]">
       <div className="max-w-7xl mx-auto space-y-24">
         
-        {/* Section Index Header */}
-        <div className="flex items-center gap-3 border-b border-white/[0.07] pb-6 text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3]">
-          <span className="text-[#F1EEE7]">02</span>
-          <span className="w-8 h-px bg-white/20" />
-          <span>{isAr ? 'الفلسفة' : 'PHILOSOPHY'}</span>
-        </div>
+        {/* Distinct Section Anatomy 02: Centered Editorial Statement Block (No Top Rule) */}
+        <div className="text-center max-w-4xl mx-auto space-y-8">
+          <span className="text-[11px] font-sans font-light uppercase tracking-[0.3em] text-[#A8A8A3] bg-white/[0.03] border border-white/10 px-4 py-1.5 rounded-full inline-block">
+            {isAr ? 'فلسفة الاستوديو' : 'STUDIO PHILOSOPHY'}
+          </span>
 
-        {/* Section Headline & Narrative */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          <div className="lg:col-span-8 space-y-6">
-            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-light text-[#F1EEE7] tracking-tight leading-[1.15]">
-              {isAr ? (
-                <>
-                  ليس قالباً. <br />
-                  <span className="font-serif italic text-[#A8A8A3]">
-                    تبدأ كل دعوة من اللحظة ذاتها: الأسماء، المكان، الأجواء، والتفاصيل التي تستحق أن تُذكر.
-                  </span>
-                </>
-              ) : (
-                <>
-                  NOT A TEMPLATE. <br />
-                  <span className="font-serif italic text-[#A8A8A3]">
-                    Every invitation begins with the moment itself: the names, the place, the mood, and the details worth remembering.
-                  </span>
-                </>
-              )}
-            </h2>
-          </div>
+          <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-light text-[#F1EEE7] tracking-tight leading-[1.08]">
+            {isAr ? (
+              <>
+                ليس قالباً جاهزاً. <br />
+                <span className="font-serif italic text-[#A8A8A3] text-3xl sm:text-5xl md:text-6xl block pt-3">
+                  تبدأ كل دعوة من اللحظة ذاتها: الأسماء، المكان، الأجواء، والتفاصيل التي تستحق أن تُذكر.
+                </span>
+              </>
+            ) : (
+              <>
+                NOT A TEMPLATE. <br />
+                <span className="font-serif italic text-[#A8A8A3] text-3xl sm:text-5xl md:text-6xl block pt-3">
+                  Every invitation begins with the moment itself: the names, the place, the mood, and the details worth remembering.
+                </span>
+              </>
+            )}
+          </h2>
 
-          <div className="lg:col-span-4 lg:pt-4 space-y-6">
-            <p className="text-sm sm:text-base text-[#8E8E89] font-light leading-relaxed">
-              {isAr
-                ? 'نشكّل الخطوط، الحركة، الصوت، والتفاصيل الدقيقة حول احتفال واحد.'
-                : 'We shape the type, movement, sound, and small details around one celebration.'}
-            </p>
-
-            <a
-              href="#process"
-              className="inline-flex items-center gap-2 text-xs font-sans font-light tracking-[0.2em] text-[#F1EEE7] uppercase py-2 border-b border-white/20 hover:border-white transition-colors duration-500"
-            >
-              <span>{isAr ? 'شاهد كيف تتشكّل الدعوة' : 'See how an invitation takes shape'}</span>
-              <span>→</span>
-            </a>
-          </div>
+          <p className="text-sm sm:text-base text-[#8E8E89] font-light leading-relaxed max-w-2xl mx-auto">
+            {isAr
+              ? 'نشكّل الخطوط، الحركة، الصوت، والتفاصيل الدقيقة حول احتفال واحد.'
+              : 'We shape the type, movement, sound, and small details around one celebration.'}
+          </p>
         </div>
 
         {/* Minimalist Direction Showcase */}
@@ -108,7 +93,7 @@ export default function PhilosophySection() {
                     key={dir.id}
                     onMouseEnter={() => setActiveDirectionIndex(idx)}
                     onClick={() => setActiveDirectionIndex(idx)}
-                    className="group relative text-start transition-opacity duration-500 focus:outline-none"
+                    className="group relative text-start transition-opacity duration-500 focus:outline-none cursor-pointer"
                   >
                     <span
                       className={`font-display text-3xl sm:text-5xl font-light tracking-tight transition-colors duration-500 ${

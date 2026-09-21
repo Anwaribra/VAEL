@@ -93,13 +93,13 @@ export default function App() {
   }, []);
 
   const renderRoute = () => {
-    // 1. Invitations Configurator Routes (/create, /invitations/design)
+    // 1. Invitations Configurator Routes (/create, /invitations/design) -> Redirect to Studio Commission Inquiry (/custom)
     if (
       currentPath === '/create' ||
       currentPath === '/create/' ||
       currentPath.startsWith('/invitations/design')
     ) {
-      return <CreateInvitationPage />;
+      return <CustomRequestPage />;
     }
 
     // 2. Manage Invitation Route (/manage/:slug)

@@ -69,6 +69,13 @@
     letter-spacing: 0;
     line-height: 1.35;
   }
+  /* RTL Icon Mirroring Utility */
+  [dir="rtl"] .icon-arrow,
+  [dir="rtl"] .rtl-mirror,
+  [dir="rtl"] svg.rtl-mirror {
+    display: inline-block;
+    transform: scaleX(-1);
+  }
 }
 
 /* Custom Sleek Dark Scrollbar */

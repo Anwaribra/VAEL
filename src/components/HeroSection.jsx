@@ -181,7 +181,7 @@ export default function HeroSection({ onWaitlistSubmit }) {
                 className="group inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-[#F1EEE7] text-[#080808] font-medium text-xs tracking-[0.2em] uppercase transition-colors duration-500 hover:bg-white shadow-lg"
               >
                 <span>{isAr ? 'ابدأ تصميمك الخاص' : 'Start a commission'}</span>
-                <span className="transition-transform duration-500 group-hover:translate-x-1.5">→</span>
+                <span className="rtl-mirror transition-transform duration-500 group-hover:translate-x-1.5 rtl:group-hover:-translate-x-1.5">→</span>
               </a>
 
               <a
@@ -240,7 +240,7 @@ export default function HeroSection({ onWaitlistSubmit }) {
                     className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 hover:border-white/40 text-[#F1EEE7] text-xs font-sans font-light tracking-[0.2em] uppercase transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-white/40 shadow-xl"
                   >
                     <span>{isAr ? 'انضم إلى قائمة الانتظار' : 'Join the waitlist'}</span>
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                    <span className="rtl-mirror transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">→</span>
                   </button>
                 </div>
 

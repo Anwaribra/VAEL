@@ -146,7 +146,6 @@ export default function CustomRequestPage() {
       setIsSubmitted(true);
     } catch (err) {
       console.error('Email dispatch error:', err);
-      // Fallback to native mailto if network blocked
       const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(
         'VAEL — Bespoke Commission Inquiry'
       )}&body=${encodeURIComponent(messageBody)}`;
@@ -169,11 +168,14 @@ export default function CustomRequestPage() {
     setTimeout(() => setCopiedMessage(false), 2500);
   };
 
+  const currentOccasionObj = OCCASIONS.find(o => o.id === selectedOccasion);
+  const selectedFeatureObjects = FEATURE_OPTIONS.filter(f => selectedFeatures.includes(f.id));
+
   return (
     <div className="min-h-screen bg-[#080808] text-[#F1EEE7] flex flex-col justify-between">
       <Navbar />
 
-      <main className="relative z-10 pt-36 pb-28 px-6 sm:px-12 md:px-16 max-w-4xl mx-auto w-full space-y-16">
+      <main className="relative z-10 pt-36 pb-28 px-6 sm:px-12 md:px-16 max-w-7xl mx-auto w-full space-y-16">
         
         {/* Page Header */}
         <div className="space-y-6 border-b border-white/[0.07] pb-12">
@@ -204,194 +206,291 @@ export default function CustomRequestPage() {
           </p>
         </div>
 
-        {/* OCCASION TYPOGRAPHIC SELECTOR */}
-        <div className="space-y-6">
-          <label className="text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3] block">
-            {isAr ? '01 / نوع المناسبة' : '01 / OCCASION TYPE'}
-          </label>
-
-          <div className="flex flex-wrap gap-3">
-            {OCCASIONS.map((occ) => {
-              const isSelected = selectedOccasion === occ.id;
-              return (
-                <button
-                  key={occ.id}
-                  type="button"
-                  onClick={() => setSelectedOccasion(occ.id)}
-                  className={`px-5 py-3 rounded-full text-xs font-sans font-light tracking-[0.2em] uppercase transition-colors duration-500 border ${
-                    isSelected
-                      ? 'bg-[#F1EEE7] text-[#080808] border-[#F1EEE7]'
-                      : 'bg-transparent text-[#A8A8A3] border-white/10 hover:border-white/30'
-                  }`}
-                >
-                  {isAr ? occ.label.ar : occ.label.en}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* CRAFT ELEMENTS SELECTOR */}
-        <div className="space-y-6 pt-10 border-t border-white/[0.07]">
-          <label className="text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3] block">
-            {isAr ? '02 / العناصر الفنية المطلوبة' : '02 / DESIRED CRAFT ELEMENTS'}
-          </label>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {FEATURE_OPTIONS.map((feat) => {
-              const isSelected = selectedFeatures.includes(feat.id);
-
-              return (
-                <button
-                  key={feat.id}
-                  type="button"
-                  onClick={() => toggleFeature(feat.id)}
-                  className={`px-5 py-4 rounded-xl border text-start transition-colors duration-500 cursor-pointer ${
-                    isSelected
-                      ? 'bg-white/[0.03] border-white/30 text-[#F1EEE7]'
-                      : 'bg-transparent border-white/10 text-[#8E8E89] hover:border-white/20'
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="text-xs font-sans font-light tracking-[0.15em] uppercase text-[#F1EEE7]">
-                      {isAr ? feat.label.ar : feat.label.en}
-                    </span>
-                    <span className={`w-2 h-2 rounded-full transition-colors ${
-                      isSelected ? 'bg-[#F1EEE7]' : 'bg-white/10'
-                    }`} />
-                  </div>
-                  <p className="text-xs text-[#8E8E89] font-light">
-                    {isAr ? feat.desc.ar : feat.desc.en}
-                  </p>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* COMMISSION QUESTIONNAIRE FORM */}
-        <form onSubmit={handleSendEmail} className="space-y-12 pt-10 border-t border-white/[0.07]">
+        {/* 2-Column Responsive Desktop Atelier Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
-          <label className="text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3] block">
-            {isAr ? '03 / معلومات التكليف والتواصل' : '03 / COMMISSION DETAILS'}
-          </label>
-
-          {/* NAME & DATE GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div className="space-y-3">
-              <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
-                {isAr ? 'الاسم أو أسماء العروسين' : 'Names / Couple'}
+          {/* Left Column (7 cols): Interactive Form Questionnaire */}
+          <div className="lg:col-span-7 space-y-14">
+            
+            {/* OCCASION TYPOGRAPHIC SELECTOR */}
+            <div className="space-y-6">
+              <label className="text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3] block">
+                {isAr ? '01 / نوع المناسبة' : '01 / OCCASION TYPE'}
               </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={isAr ? 'مثال: كريم ونور' : 'e.g., Karim & Nour'}
-                className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-5 py-4 text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors font-sans"
-              />
-            </div>
 
-            <div className="space-y-3">
-              <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
-                {isAr ? 'التاريخ المطلوب' : 'Desired Date'}
-              </label>
-              <input
-                type="text"
-                value={desiredDate}
-                onChange={(e) => setDesiredDate(e.target.value)}
-                placeholder={isAr ? 'مثال: 14 نوفمبر 2026' : 'e.g., November 14, 2026'}
-                className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-5 py-4 text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors font-sans"
-              />
-            </div>
-          </div>
-
-          {/* CONTACT INFO (Required) */}
-          <div className="space-y-3">
-            <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
-              {isAr ? 'طريقة التواصل: الواتساب أو البريد (مطلوب)' : 'Contact info: WhatsApp or Email (required)'}
-            </label>
-            <input
-              required
-              type="text"
-              value={contactInfo}
-              onChange={(e) => {
-                setContactInfo(e.target.value);
-                if (validationError) setValidationError('');
-              }}
-              placeholder={isAr ? '01123456789 أو name@example.com' : '+201123456789 or name@example.com'}
-              className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-5 py-4 text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors font-sans"
-            />
-          </div>
-
-          {/* VISION BRIEF TEXTAREA */}
-          <div className="space-y-3">
-            <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
-              {isAr ? 'ملاحظات الرؤية الفنية (اختياري)' : 'Vision Brief & Notes (optional)'}
-            </label>
-            <textarea
-              rows={5}
-              value={details}
-              onChange={(e) => setDetails(e.target.value)}
-              placeholder={isAr ? 'صف لنا رؤيتك، الموسيقى المفضلة، أو أي تفاصيل خاصة...' : 'Describe your custom vision, music preferences, aesthetic references...'}
-              className="w-full bg-white/[0.02] border border-white/10 p-5 rounded-xl text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors resize-none leading-relaxed font-sans"
-            />
-          </div>
-
-          {validationError && (
-            <p className="text-xs text-red-400 font-sans tracking-wide">
-              {validationError}
-            </p>
-          )}
-
-          {isSubmitted && (
-            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/20 text-center space-y-2">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mx-auto text-[#F1EEE7]">
-                ✓
+              <div className="flex flex-wrap gap-3">
+                {OCCASIONS.map((occ) => {
+                  const isSelected = selectedOccasion === occ.id;
+                  return (
+                    <button
+                      key={occ.id}
+                      type="button"
+                      onClick={() => setSelectedOccasion(occ.id)}
+                      className={`px-5 py-3 rounded-full text-xs font-sans font-light tracking-[0.2em] uppercase transition-colors duration-500 border cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#F1EEE7] text-[#080808] border-[#F1EEE7]'
+                          : 'bg-transparent text-[#A8A8A3] border-white/10 hover:border-white/30'
+                      }`}
+                    >
+                      {isAr ? occ.label.ar : occ.label.en}
+                    </button>
+                  );
+                })}
               </div>
-              <h4 className="font-serif italic text-xl font-light text-[#F1EEE7]">
-                {isAr ? 'تم استلام طلب التكليف بنجاح' : 'Commission Brief Received'}
-              </h4>
-              <p className="text-xs text-[#8E8E89] font-light max-w-md mx-auto">
-                {isAr
-                  ? `تم إرسال تفاصيل التكليف مباشرة إلى الاستوديو (${contactEmail}). وسنتواصل معكم قريباً.`
-                  : `Your inquiry has been dispatched to ${contactEmail}. Our team will review your brief shortly.`}
-              </p>
             </div>
-          )}
 
-          {/* ACTION BUTTONS */}
-          <div className="pt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-8 py-4 rounded-full bg-[#F1EEE7] text-[#080808] disabled:opacity-50 font-medium text-xs font-sans tracking-[0.2em] uppercase transition-colors duration-500 hover:bg-white cursor-pointer disabled:cursor-not-allowed"
-            >
-              <span>
-                {isSubmitting
-                  ? (isAr ? 'جاري إرسال التكليف...' : 'SUBMITTING BRIEF...')
-                  : (isAr ? 'إرسال التكليف عبر البريد' : 'SUBMIT COMMISSION BRIEF')}
-              </span>
-            </button>
+            {/* CRAFT ELEMENTS SELECTOR */}
+            <div className="space-y-6 pt-10 border-t border-white/[0.07]">
+              <label className="text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3] block">
+                {isAr ? '02 / العناصر الفنية المطلوبة' : '02 / DESIRED CRAFT ELEMENTS'}
+              </label>
 
-            <a
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildFormattedMessage())}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-4 rounded-full border border-white/20 text-[#F1EEE7] font-medium text-xs font-sans tracking-[0.2em] uppercase text-center transition-colors duration-500 hover:border-white hover:bg-white/5 cursor-pointer"
-            >
-              <span>{isAr ? 'مراسلة عبر الواتساب →' : 'INQUIRE VIA WHATSAPP →'}</span>
-            </a>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {FEATURE_OPTIONS.map((feat) => {
+                  const isSelected = selectedFeatures.includes(feat.id);
 
-            <button
-              type="button"
-              onClick={handleCopyMessage}
-              className="px-6 py-4 text-xs font-sans font-light tracking-[0.15em] text-[#8E8E89] hover:text-[#F1EEE7] uppercase transition-colors duration-500 cursor-pointer text-center"
-            >
-              <span>{copiedMessage ? (isAr ? 'تم النسخ!' : 'COPIED!') : (isAr ? 'نسخ النص' : 'COPY BRIEF')}</span>
-            </button>
+                  return (
+                    <button
+                      key={feat.id}
+                      type="button"
+                      onClick={() => toggleFeature(feat.id)}
+                      className={`px-5 py-4 rounded-xl border text-start transition-colors duration-500 cursor-pointer ${
+                        isSelected
+                          ? 'bg-white/[0.03] border-white/30 text-[#F1EEE7]'
+                          : 'bg-transparent border-white/10 text-[#8E8E89] hover:border-white/20'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="text-xs font-sans font-light tracking-[0.15em] uppercase text-[#F1EEE7]">
+                          {isAr ? feat.label.ar : feat.label.en}
+                        </span>
+                        <span className={`w-2 h-2 rounded-full transition-colors ${
+                          isSelected ? 'bg-[#F1EEE7]' : 'bg-white/10'
+                        }`} />
+                      </div>
+                      <p className="text-xs text-[#8E8E89] font-light">
+                        {isAr ? feat.desc.ar : feat.desc.en}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* COMMISSION QUESTIONNAIRE FORM */}
+            <form onSubmit={handleSendEmail} className="space-y-10 pt-10 border-t border-white/[0.07]">
+              
+              <label className="text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3] block">
+                {isAr ? '03 / معلومات التكليف والتواصل' : '03 / COMMISSION DETAILS'}
+              </label>
+
+              {/* NAME & DATE GRID */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
+                    {isAr ? 'الاسم أو أسماء العروسين' : 'Names / Couple'}
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={isAr ? 'مثال: كريم ونور' : 'e.g., Karim & Nour'}
+                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-5 py-4 text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors font-sans"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
+                    {isAr ? 'التاريخ المطلوب' : 'Desired Date'}
+                  </label>
+                  <input
+                    type="text"
+                    value={desiredDate}
+                    onChange={(e) => setDesiredDate(e.target.value)}
+                    placeholder={isAr ? 'مثال: 14 نوفمبر 2026' : 'e.g., November 14, 2026'}
+                    className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-5 py-4 text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors font-sans"
+                  />
+                </div>
+              </div>
+
+              {/* CONTACT INFO (Required) */}
+              <div className="space-y-3">
+                <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
+                  {isAr ? 'طريقة التواصل: الواتساب أو البريد (مطلوب)' : 'Contact info: WhatsApp or Email (required)'}
+                </label>
+                <input
+                  required
+                  type="text"
+                  value={contactInfo}
+                  onChange={(e) => {
+                    setContactInfo(e.target.value);
+                    if (validationError) setValidationError('');
+                  }}
+                  placeholder={isAr ? '01123456789 أو name@example.com' : '+201123456789 or name@example.com'}
+                  className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-5 py-4 text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors font-sans"
+                />
+              </div>
+
+              {/* VISION BRIEF TEXTAREA */}
+              <div className="space-y-3">
+                <label className="text-xs font-sans font-light uppercase tracking-[0.15em] text-[#A8A8A3] block">
+                  {isAr ? 'ملاحظات الرؤية الفنية (اختياري)' : 'Vision Brief & Notes (optional)'}
+                </label>
+                <textarea
+                  rows={5}
+                  value={details}
+                  onChange={(e) => setDetails(e.target.value)}
+                  placeholder={isAr ? 'صف لنا رؤيتك، الموسيقى المفضلة، أو أي تفاصيل خاصة...' : 'Describe your custom vision, music preferences, aesthetic references...'}
+                  className="w-full bg-white/[0.02] border border-white/10 p-5 rounded-xl text-sm text-[#F1EEE7] placeholder-[#8E8E89]/40 focus:border-white/40 focus:outline-none transition-colors resize-none leading-relaxed font-sans"
+                />
+              </div>
+
+              {validationError && (
+                <p className="text-xs text-red-400 font-sans tracking-wide">
+                  {validationError}
+                </p>
+              )}
+
+              {isSubmitted && (
+                <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/20 text-center space-y-2">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mx-auto text-[#F1EEE7]">
+                    ✓
+                  </div>
+                  <h4 className="font-serif italic text-xl font-light text-[#F1EEE7]">
+                    {isAr ? 'تم استلام طلب التكليف بنجاح' : 'Commission Brief Received'}
+                  </h4>
+                  <p className="text-xs text-[#8E8E89] font-light max-w-md mx-auto">
+                    {isAr
+                      ? `تم إرسال تفاصيل التكليف مباشرة إلى الاستوديو (${contactEmail}). وسنتواصل معكم قريباً.`
+                      : `Your inquiry has been dispatched to ${contactEmail}. Our team will review your brief shortly.`}
+                  </p>
+                </div>
+              )}
+
+              {/* ACTION BUTTONS */}
+              <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-8 py-4 rounded-full bg-[#F1EEE7] text-[#080808] disabled:opacity-50 font-medium text-xs font-sans tracking-[0.2em] uppercase transition-colors duration-500 hover:bg-white cursor-pointer disabled:cursor-not-allowed"
+                >
+                  <span>
+                    {isSubmitting
+                      ? (isAr ? 'جاري إرسال التكليف...' : 'SUBMITTING BRIEF...')
+                      : (isAr ? 'إرسال التكليف عبر البريد' : 'SUBMIT COMMISSION BRIEF')}
+                  </span>
+                </button>
+
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildFormattedMessage())}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 rounded-full border border-white/20 text-[#F1EEE7] font-medium text-xs font-sans tracking-[0.2em] uppercase text-center transition-colors duration-500 hover:border-white hover:bg-white/5 cursor-pointer"
+                >
+                  <span>{isAr ? 'مراسلة عبر الواتساب' : 'INQUIRE VIA WHATSAPP'}</span>
+                  <span className="rtl-mirror inline-block ml-2">→</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleCopyMessage}
+                  className="px-6 py-4 text-xs font-sans font-light tracking-[0.15em] text-[#8E8E89] hover:text-[#F1EEE7] uppercase transition-colors duration-500 cursor-pointer text-center"
+                >
+                  <span>{copiedMessage ? (isAr ? 'تم النسخ!' : 'COPIED!') : (isAr ? 'نسخ النص' : 'COPY BRIEF')}</span>
+                </button>
+              </div>
+
+            </form>
+
           </div>
 
-        </form>
+          {/* Right Column (5 cols): Sticky Real-time Atelier Live Preview Panel */}
+          <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-6">
+            <div className="bg-[#0b0b0e] border border-white/10 rounded-2xl p-7 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden">
+              
+              {/* Top Card Badge */}
+              <div className="flex items-center justify-between border-b border-white/10 pb-4 text-xs font-sans font-light text-[#A8A8A3] uppercase tracking-[0.2em]">
+                <span>{isAr ? 'معاينة ملخص التكليف' : 'COMMISSION BRIEF SUMMARY'}</span>
+                <span>VAEL</span>
+              </div>
+
+              {/* Live Occasion Badge */}
+              <div className="space-y-2">
+                <span className="text-[10px] font-sans font-light text-[#8E8E89] uppercase tracking-[0.2em] block">
+                  {isAr ? 'نوع المناسبة' : 'SELECTED OCCASION'}
+                </span>
+                <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-sans font-light text-[#F1EEE7] uppercase tracking-[0.2em]">
+                  {currentOccasionObj ? (isAr ? currentOccasionObj.label.ar : currentOccasionObj.label.en) : '—'}
+                </div>
+              </div>
+
+              {/* Live Names & Date Summary */}
+              <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4 text-xs">
+                <div>
+                  <span className="text-[10px] font-sans font-light text-[#8E8E89] uppercase tracking-[0.2em] block mb-1">
+                    {isAr ? 'الاسم' : 'NAMES'}
+                  </span>
+                  <p className="font-serif italic text-base text-[#F1EEE7] truncate">
+                    {name.trim() || (isAr ? 'لم يحدد بعد' : 'Not specified')}
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[10px] font-sans font-light text-[#8E8E89] uppercase tracking-[0.2em] block mb-1">
+                    {isAr ? 'التاريخ' : 'DATE'}
+                  </span>
+                  <p className="text-xs text-[#F1EEE7] font-sans font-light truncate">
+                    {desiredDate.trim() || (isAr ? 'لم يحدد بعد' : 'Not specified')}
+                  </p>
+                </div>
+              </div>
+
+              {/* Live Craft Add-ons Chips */}
+              <div className="space-y-3 border-t border-white/10 pt-4">
+                <div className="flex items-center justify-between text-[10px] font-sans font-light text-[#8E8E89] uppercase tracking-[0.2em]">
+                  <span>{isAr ? 'العناصر المختارة' : 'CRAFT ELEMENTS'}</span>
+                  <span>({selectedFeatureObjects.length})</span>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {selectedFeatureObjects.map(f => (
+                    <span
+                      key={f.id}
+                      className="px-3 py-1 rounded-md bg-white/[0.04] border border-white/10 text-[11px] text-[#F1EEE7] font-sans font-light"
+                    >
+                      {isAr ? f.label.ar : f.label.en}
+                    </span>
+                  ))}
+                  {selectedFeatureObjects.length === 0 && (
+                    <span className="text-xs text-[#8E8E89] font-light italic">
+                      {isAr ? 'لم يتم اختيار عناصر إضافية' : 'No add-on elements selected'}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Vision Brief Preview */}
+              {details.trim() && (
+                <div className="border-t border-white/10 pt-4 space-y-1">
+                  <span className="text-[10px] font-sans font-light text-[#8E8E89] uppercase tracking-[0.2em] block">
+                    {isAr ? 'رؤية التكليف' : 'VISION BRIEF'}
+                  </span>
+                  <p className="text-xs text-[#A8A8A3] font-light italic line-clamp-3 leading-relaxed">
+                    "{details.trim()}"
+                  </p>
+                </div>
+              )}
+
+              {/* Footer Note */}
+              <div className="border-t border-white/10 pt-4 text-[10px] text-[#8E8E89]/70 font-sans uppercase tracking-[0.18em] flex justify-between items-center">
+                <span>BESPOKE ATELIER</span>
+                <span>2026</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
 
       </main>
 

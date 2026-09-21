@@ -8,21 +8,24 @@ export default function ProcessSection() {
   const steps = [
     {
       id: '01',
-      title: isAr ? '01 — شاركونا اللحظة' : '01 — Tell us the moment',
+      stepTag: 'STEP 01',
+      title: isAr ? 'شاركونا اللحظة' : 'Tell us the moment',
       description: isAr
         ? 'شاركونا التاريخ، المكان، الأجواء، وما ترغبون أن يشعر به ضيوفكم.'
         : 'Share the date, place, mood, and what you want your guests to feel.',
     },
     {
       id: '02',
-      title: isAr ? '02 — نشكّل التجربة' : '02 — Shape the experience',
+      stepTag: 'STEP 02',
+      title: isAr ? 'نشكّل التجربة' : 'Shape the experience',
       description: isAr
         ? 'نقوم بصياغة الخطوط، الحركة، الصوت، الصور، والتفاصيل حول قصتكم.'
         : 'We refine the type, movement, sound, images, and details around your story.',
     },
     {
       id: '03',
-      title: isAr ? '03 — استلموا الرابط الخاص' : '03 — Receive the private link',
+      stepTag: 'STEP 03',
+      title: isAr ? 'استلموا الرابط الخاص' : 'Receive the private link',
       description: isAr
         ? 'تصلكم الدعوة كرابط رقمي متجاوب وجاهز للمشاركة.'
         : 'Your invitation is delivered as a responsive, shareable digital experience.',
@@ -31,24 +34,27 @@ export default function ProcessSection() {
 
   return (
     <section id="process" className="relative w-full py-32 md:py-44 px-6 sm:px-12 md:px-16 bg-[#080808] text-[#F1EEE7] border-b border-white/[0.07]">
-      <div className="max-w-7xl mx-auto flex flex-col relative z-10">
+      <div className="max-w-7xl mx-auto flex flex-col relative z-10 space-y-16">
         
-        {/* Section Header */}
-        <div className="flex items-center gap-3 border-b border-white/[0.07] pb-6 text-xs font-sans font-light uppercase tracking-[0.2em] text-[#A8A8A3] mb-12">
-          <span className="text-[#F1EEE7]">04</span>
-          <span className="w-8 h-px bg-white/20" />
-          <span>{isAr ? 'خطوات العمل' : 'PROCESS'}</span>
+        {/* Distinct Section Anatomy 04: Timeline Progress Node Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/[0.07] pb-10">
+          <div className="space-y-4 max-w-2xl">
+            <div className="flex items-center gap-3 text-xs font-sans font-light uppercase tracking-[0.25em] text-[#A8A8A3]">
+              <span className="w-2 h-2 rounded-full bg-white/60" />
+              <span>{isAr ? 'منهجية العمل' : 'STUDIO PROCESS'}</span>
+            </div>
+            <h2 className="font-display text-4xl sm:text-6xl font-light text-[#F1EEE7] tracking-tight leading-[1.08]">
+              {isAr ? 'كيف تتحول اللحظة إلى صفحة.' : 'How a moment becomes a page.'}
+            </h2>
+          </div>
+
+          <p className="text-xs font-sans font-light text-[#8E8E89] tracking-[0.2em] uppercase max-w-sm">
+            {isAr ? 'ثلاث خطوات مدروسة من الفكرة وحتى التسليم.' : 'Three considered steps from initial brief to final reveal.'}
+          </p>
         </div>
 
-        {/* Section Title Block */}
-        <div className="max-w-3xl space-y-4 mb-16 md:mb-20">
-          <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-light text-[#F1EEE7] tracking-tight leading-[1.1]">
-            {isAr ? 'كيف تتحول اللحظة إلى صفحة.' : 'How a moment becomes a page.'}
-          </h2>
-        </div>
-
-        {/* 3-Step Clean Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 border-t border-white/[0.07] pt-12 md:pt-16">
+        {/* 3-Step Timeline Track */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 pt-4">
           {steps.map((step, idx) => (
             <motion.div
               key={step.id}
@@ -63,6 +69,10 @@ export default function ProcessSection() {
               } space-y-6 flex flex-col justify-between`}
             >
               <div className="space-y-4">
+                <span className="text-[10px] font-sans font-light tracking-[0.25em] text-[#A8A8A3] uppercase bg-white/[0.03] border border-white/10 px-3 py-1 rounded-full inline-block">
+                  {step.stepTag}
+                </span>
+
                 <h3 className="font-display text-2xl sm:text-3xl font-light text-[#F1EEE7] tracking-tight">
                   {step.title}
                 </h3>
@@ -73,7 +83,7 @@ export default function ProcessSection() {
               </div>
 
               <div className="pt-6">
-                <div className="w-10 h-px bg-white/20" />
+                <div className="w-12 h-px bg-white/20" />
               </div>
             </motion.div>
           ))}
